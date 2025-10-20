@@ -3,5 +3,8 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <bean id="suppliersRepository" class="com.Tricol.repository.SuppliersRepository" />
+    <bean id="suppliersRepository" class="com.Tricol.repository.implementation.SuppliersRepository" />
+    <bean id="supplierService" class="com.Tricol.service.implementation.SupplierService">
+        <property name="suppliersRepository" ref="suppliersRepository"/>
+    </bean>
 </beans>
