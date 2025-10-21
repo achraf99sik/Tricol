@@ -1,51 +1,75 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
        xmlns:jpa="http://www.springframework.org/schema/data/jpa"
        xmlns:tx="http://www.springframework.org/schema/tx"
-       xsi:schemaLocation="
-           http://www.springframework.org/schema/beans
-           https://www.springframework.org/schema/beans/spring-beans.xsd
-           http://www.springframework.org/schema/tx
-           https://www.springframework.org/schema/tx/spring-tx.xsd
-           http://www.springframework.org/schema/data/jpa
-           https://www.springframework.org/schema/data/jpa/spring-jpa.xsd">
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.springframework.org/schema/context
+                           http://www.springframework.org/schema/context/spring-context.xsd
+                           http://www.springframework.org/schema/data/jpa
+                           http://www.springframework.org/schema/data/jpa/spring-jpa.xsd
+                           http://www.springframework.org/schema/tx
+                           http://www.springframework.org/schema/tx/spring-tx.xsd
+                           http://www.springframework.org/schema/aop
+                           http://www.springframework.org/schema/aop/spring-aop.xsd http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
+    <context:component-scan base-package="com.Tricol"/>
+
+    <!-- Enable JPA repositories -->
+    <jpa:repositories base-package="com.Tricol.repository"/>
+
+    <!-- DataSource -->
     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName" value="org.postgresql.Driver" />
         <property name="url" value="jdbc:postgresql://localhost:5432/tricol" />
         <property name="username" value="postgres" />
         <property name="password" value="root" />
     </bean>
-    <bean id="suppliersRepository" class="com.Tricol.repository.implementation.SuppliersRepository"/>
 
-    <bean id="supplierService" class="com.Tricol.service.implementation.SupplierService">
-        <property name="suppliersRepository" ref="suppliersRepositoryInterface" />
-    </bean>
-
-    <bean id="suppliersController" class="com.Tricol.controller.SuppliersController">
-        <property name="supplierService" ref="supplierService" />
-    </bean>
-
-
+    <!-- EntityManagerFactory -->
     <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
         <property name="dataSource" ref="dataSource"/>
-        <property name="persistenceUnitName" value="tricolPU"/>
+        <property name="packagesToScan" value="com.Tricol.model"/>
         <property name="jpaVendorAdapter">
-            <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
-                <property name="generateDdl" value="true" />
-                <property name="showSql" value="true" />
-                <property name="databasePlatform" value="org.hibernate.dialect.PostgreSQLDialect" />
-            </bean>
+            <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"/>
+        </property>
+        <property name="jpaProperties">
+            <props>
+                <prop key="hibernate.hbm2ddl.auto">update</prop>
+                <prop key="hibernate.show_sql">true</prop>
+            </props>
         </property>
     </bean>
 
+    <!-- Transaction Manager -->
     <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
         <property name="entityManagerFactory" ref="entityManagerFactory"/>
     </bean>
 
-    <tx:annotation-driven transaction-manager="transactionManager"/>
+    <!-- XML-based transaction advice for services -->
+    <tx:advice id="txAdvice" transaction-manager="transactionManager">
+        <tx:attributes>
+            <tx:method name="*" propagation="REQUIRED" />
+            <tx:method name="find*" read-only="true" />
+        </tx:attributes>
+    </tx:advice>
 
-    <jpa:repositories base-package="com.Tricol.repository.interfaces" />
+    <!-- AOP config to apply transactions to service methods -->
+    <aop:config>
+        <aop:pointcut id="serviceMethods" expression="execution(* com.Tricol.service.interfaces.SupplierServiceInterface(..))" />
+        <aop:advisor advice-ref="txAdvice" pointcut-ref="serviceMethods" />
+    </aop:config>
 
+    <!-- Service bean with setter injection for repo -->
+    <bean id="supplierService" class="com.Tricol.service.implementation.SupplierService">
+        <property name="suppliersRepository" ref="suppliersRepositoryInterface" />
+    </bean>
+    <bean id="suppliersController" class="com.Tricol.controller.SuppliersController">
+        <property name="supplierService" ref="supplierService" />
+    </bean>
+    <mvc:annotation-driven />
 </beans>
