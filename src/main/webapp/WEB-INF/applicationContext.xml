@@ -19,10 +19,8 @@
 
     <context:component-scan base-package="com.Tricol"/>
 
-    <!-- Enable JPA repositories -->
     <jpa:repositories base-package="com.Tricol.repository"/>
 
-    <!-- DataSource -->
     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName" value="org.postgresql.Driver" />
         <property name="url" value="jdbc:postgresql://localhost:5432/tricol" />
@@ -30,7 +28,6 @@
         <property name="password" value="root" />
     </bean>
 
-    <!-- EntityManagerFactory -->
     <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
         <property name="dataSource" ref="dataSource"/>
         <property name="packagesToScan" value="com.Tricol.model"/>
@@ -45,12 +42,10 @@
         </property>
     </bean>
 
-    <!-- Transaction Manager -->
     <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
         <property name="entityManagerFactory" ref="entityManagerFactory"/>
     </bean>
 
-    <!-- XML-based transaction advice for services -->
     <tx:advice id="txAdvice" transaction-manager="transactionManager">
         <tx:attributes>
             <tx:method name="*" propagation="REQUIRED" />
@@ -58,13 +53,11 @@
         </tx:attributes>
     </tx:advice>
 
-    <!-- AOP config to apply transactions to service methods -->
     <aop:config>
         <aop:pointcut id="serviceMethods" expression="execution(* com.Tricol.service.interfaces.SupplierServiceInterface(..))" />
         <aop:advisor advice-ref="txAdvice" pointcut-ref="serviceMethods" />
     </aop:config>
 
-    <!-- Service bean with setter injection for repo -->
     <bean id="supplierService" class="com.Tricol.service.implementation.SupplierService">
         <property name="suppliersRepository" ref="suppliersRepositoryInterface" />
     </bean>
