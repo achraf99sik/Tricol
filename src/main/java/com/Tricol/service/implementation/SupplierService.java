@@ -13,7 +13,7 @@ public class SupplierService implements SupplierServiceInterface {
         this.suppliersRepository = suppliersRepository;
     }
     public Supplier getSupplier(UUID supplierId) {
-        return this.suppliersRepository.getReferenceById(supplierId);
+        return this.suppliersRepository.findById(supplierId).orElseThrow(()->new RuntimeException("Supplier not found: "+ supplierId));
     }
     public List<Supplier> getSuppliers() {
         return this.suppliersRepository.findAll();
