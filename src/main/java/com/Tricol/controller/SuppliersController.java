@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/supplier")
+@RequestMapping("/api/v1/suppliers")
 public class SuppliersController {
     private SupplierServiceInterface supplierService;
 
