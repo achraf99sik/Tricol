@@ -59,10 +59,10 @@
     </aop:config>
 
     <bean id="supplierService" class="com.Tricol.service.implementation.SupplierService">
-        <property name="suppliersRepository" ref="suppliersRepositoryInterface" />
+        <constructor-arg ref="suppliersRepositoryInterface" />
     </bean>
     <bean id="suppliersController" class="com.Tricol.controller.SuppliersController">
-        <property name="supplierService" ref="supplierService" />
+        <constructor-arg ref="supplierService" />
     </bean>
     <mvc:annotation-driven />
 </beans>

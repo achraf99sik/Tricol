@@ -8,8 +8,8 @@ import java.util.List;
 import java.util.UUID;
 
 public class SupplierService implements SupplierServiceInterface {
-    private SuppliersRepositoryInterface suppliersRepository;
-    public void setSuppliersRepository(SuppliersRepositoryInterface suppliersRepository) {
+    private final SuppliersRepositoryInterface suppliersRepository;
+    public SupplierService(SuppliersRepositoryInterface suppliersRepository) {
         this.suppliersRepository = suppliersRepository;
     }
     public Supplier getSupplier(UUID supplierId) {

@@ -10,9 +10,9 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/v1/suppliers")
 public class SuppliersController {
-    private SupplierServiceInterface supplierService;
+    private final SupplierServiceInterface supplierService;
 
-    public void setSupplierService(SupplierServiceInterface supplierService) {
+    public SuppliersController(SupplierServiceInterface supplierService) {
         this.supplierService = supplierService;
     }
     @GetMapping("/{id}")
