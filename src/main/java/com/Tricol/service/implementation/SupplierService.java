@@ -15,7 +15,7 @@ public class SupplierService implements SupplierServiceInterface {
     public Supplier getSupplier(UUID supplierId) {
         return this.suppliersRepository.findById(supplierId).orElseThrow(()->new RuntimeException("Supplier not found: "+ supplierId));
     }
-    public List<Supplier> getSuppliers() {
+    public List<Supplier> getSuppliers(String sort, String sortBy, String searchTerm, String searchBy) {
         return this.suppliersRepository.findAll();
     }
 

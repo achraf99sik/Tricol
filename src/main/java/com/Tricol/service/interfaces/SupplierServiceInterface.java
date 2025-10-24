@@ -7,7 +7,7 @@ import java.util.UUID;
 
 public interface SupplierServiceInterface {
     public Supplier getSupplier(UUID supplierId);
-    public List<Supplier> getSuppliers();
+    public List<Supplier> getSuppliers(String sort, String sortBy, String searchTerm,String searchBy);
     public void addSupplier(Supplier supplier);
     public void deleteSupplier(UUID supplierId);
     public void updateSupplier(Supplier supplier, UUID supplierId);

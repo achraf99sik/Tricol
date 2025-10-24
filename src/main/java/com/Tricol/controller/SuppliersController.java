@@ -20,8 +20,13 @@ public class SuppliersController {
         return this.supplierService.getSupplier(id);
     }
     @GetMapping
-    public List<Supplier> getSuppliers() {
-        return this.supplierService.getSuppliers();
+    public List<Supplier> getSuppliers(
+            @RequestParam(value = "sort", required = false) String sort,
+            @RequestParam(value = "sortBy", required = false) String sortBy,
+            @RequestParam(value = "searchTerm", required = false) String searchTerm,
+            @RequestParam(value = "searchBy", required = false) String searchBy
+    ) {
+        return this.supplierService.getSuppliers(sort, sortBy, searchTerm, searchBy);
     }
     @PostMapping
     public void createSupplier(@RequestBody Supplier supplier) {
