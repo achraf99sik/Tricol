@@ -3,6 +3,7 @@ package com.Tricol.service.implementation;
 import com.Tricol.model.Supplier;
 import com.Tricol.repository.interfaces.SuppliersRepositoryInterface;
 import com.Tricol.service.interfaces.SupplierServiceInterface;
+import org.springframework.data.domain.Sort;
 
 import java.util.List;
 import java.util.UUID;
@@ -16,8 +17,25 @@ public class SupplierService implements SupplierServiceInterface {
         return this.suppliersRepository.findById(supplierId).orElseThrow(()->new RuntimeException("Supplier not found: "+ supplierId));
     }
     public List<Supplier> getSuppliers(String sort, String sortBy, String searchTerm, String searchBy) {
-        return this.suppliersRepository.findAll();
+        Sort.Direction direction = Sort.Direction.fromOptionalString(sort).orElse(Sort.Direction.ASC);
+        String sortField = (sortBy != null && !sortBy.isBlank()) ? sortBy : "id";
+        Sort sortObj = Sort.by(direction, sortField);
+
+        if (searchTerm != null && searchBy != null) {
+            return switch (searchBy.toLowerCase()) {
+                case "company" -> suppliersRepository.findByCompanyContainingIgnoreCase(searchTerm, sortObj);
+                case "address" -> suppliersRepository.findByAddressContainingIgnoreCase(searchTerm, sortObj);
+                case "email" -> suppliersRepository.findByEmailContainingIgnoreCase(searchTerm, sortObj);
+                case "phone" -> suppliersRepository.findByPhoneContainingIgnoreCase(searchTerm, sortObj);
+                case "city" -> suppliersRepository.findByCityContainingIgnoreCase(searchTerm, sortObj);
+                case "ice" -> suppliersRepository.findByIceContainingIgnoreCase(searchTerm, sortObj);
+                case "contact" -> suppliersRepository.findByContactContainingIgnoreCase(searchTerm, sortObj);
+                default -> suppliersRepository.findAll(sortObj);
+            };
+        }
+        return suppliersRepository.findAll(sortObj);
     }
+
 
     @Override
     public void addSupplier(Supplier supplier) {

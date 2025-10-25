@@ -3,7 +3,9 @@ package com.Tricol.model;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import org.springframework.data.annotation.CreatedDate;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
@@ -18,6 +20,8 @@ public class Supplier {
     private String phone;
     private String city;
     private int ice;
+    @CreatedDate
+    private LocalDateTime createdAt;
 
     public Supplier(String company, String address, String contact, String email, String phone, String city, int ice) {
         this.company = company;
