@@ -2,6 +2,9 @@ package com.tricol.supplier_order.controller;
 import com.tricol.supplier_order.model.Supplier;
 import com.tricol.supplier_order.service.interfaces.SupplierServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,12 +24,19 @@ public class SupplierController {
     }
     @GetMapping
     public List<Supplier> getSuppliers(
-            @RequestParam(value = "sort", required = false) String sort,
             @RequestParam(value = "sortBy", required = false) String sortBy,
+            @RequestParam(value = "order", required = false) String order,
             @RequestParam(value = "searchTerm", required = false) String searchTerm,
-            @RequestParam(value = "searchBy", required = false) String searchBy
+            @RequestParam(value = "searchBy", required = false) String searchBy,
+            @RequestParam(value = "page", required = false) Integer page,
+            @RequestParam(value = "perPage", required = false) Integer perPage
     ) {
-        return this.supplierService.getSuppliers(sort, sortBy, searchTerm, searchBy);
+        int currentPage = (page != null && page > 0) ? page - 1 : 0;
+        int pageSize = (perPage != null && perPage > 0) ? perPage : 10;
+        Sort sort = Sort.by(sortBy, order, searchTerm, searchBy);
+
+        Pageable pageable = PageRequest.of(currentPage, pageSize, sort);
+        return this.supplierService.getSuppliers(sortBy,order, searchTerm, searchBy, pageable);
     }
     @PostMapping
     public void createSupplier(@RequestBody Supplier supplier) {
