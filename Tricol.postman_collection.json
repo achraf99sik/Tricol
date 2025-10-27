@@ -1,0 +1,304 @@
+{
+	"info": {
+		"_postman_id": "a12b3b70-eb24-4f1f-a006-afa48ba59c78",
+		"name": "Tricol",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "42975360"
+	},
+	"item": [
+		{
+			"name": "Supplier",
+			"item": [
+				{
+					"name": "Get supplier",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{API}}suppliers/ff90b4ef-0183-4a8b-bb87-da217edc6cdc"
+					},
+					"response": [
+						{
+							"name": "200",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": "{{API}}suppliers/ff90b4ef-0183-4a8b-bb87-da217edc6cdc"
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 22 Oct 2025 11:02:01 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=20"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": \"ff90b4ef-0183-4a8b-bb87-da217edc6cdc\",\n    \"company\": \"Tricol\",\n    \"address\": \"123 Main St\",\n    \"email\": \"john@tricol.com\",\n    \"phone\": \"0600000000\",\n    \"city\": \"Safi\",\n    \"ice\": 2343439,\n    \"contact\": \"John Doe\"\n}"
+						}
+					]
+				},
+				{
+					"name": "List suppliers",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API}}suppliers",
+							"host": [
+								"{{API}}suppliers"
+							],
+							"query": [
+								{
+									"key": "searchBy",
+									"value": "company",
+									"disabled": true
+								},
+								{
+									"key": "searchTerm",
+									"value": "tricol",
+									"disabled": true
+								},
+								{
+									"key": "sort",
+									"value": "desc",
+									"disabled": true
+								},
+								{
+									"key": "sortBy",
+									"value": "ice",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "200",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": "{{API}}suppliers"
+							},
+							"status": " OK",
+							"code": 200,
+							"_postman_previewlanguage": "",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 22 Oct 2025 10:55:02 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=20"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [
+								{
+									"expires": "Invalid Date",
+									"domain": "",
+									"path": ""
+								}
+							],
+							"body": "[\n    {\n        \"id\": \"ff90b4ef-0183-4a8b-bb87-da217edc6cdc\",\n        \"company\": \"Tricol\",\n        \"address\": \"123 Main St\",\n        \"email\": \"john@tricol.com\",\n        \"phone\": \"0600000000\",\n        \"city\": \"Safi\",\n        \"ice\": 2343439,\n        \"contact\": \"John Doe\"\n    },\n    {\n        \"id\": \"f9c89196-47d7-4bdd-b3cd-eaea2cd1741f\",\n        \"company\": \"Google\",\n        \"address\": \"123 Main St\",\n        \"email\": \"john@tricol.com\",\n        \"phone\": \"01354433231\",\n        \"city\": \"Safi\",\n        \"ice\": 2343432,\n        \"contact\": \"John Doe\"\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "Update supplier",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"company\": \"{{$randomCompanyName}}\",\r\n    \"address\": \"{{$randomStreetAddress}}\",\r\n    \"email\": \"{{$randomEmail}}\",\r\n    \"phone\": \"{{$randomPhoneNumber}}\",\r\n    \"city\": \"{{$randomCity}}\",\r\n    \"ice\": {{ice}},\r\n    \"contact\": \"{{$randomFullName}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{API}}suppliers/f9c89196-47d7-4bdd-b3cd-eaea2cd1741f"
+					},
+					"response": [
+						{
+							"name": "200",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"company\": \"facebook\",\r\n    \"address\": \"123 Main St\",\r\n    \"email\": \"john@tricol.com\",\r\n    \"phone\": \"01354433231\",\r\n    \"city\": \"Agadir\",\r\n    \"ice\": 2343432,\r\n    \"contact\": \"John Doe\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{API}}suppliers/f9c89196-47d7-4bdd-b3cd-eaea2cd1741f"
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Content-Length",
+									"value": "0"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 22 Oct 2025 13:13:37 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=20"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "Add supplier",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"company\": \"Tricol\",\r\n    \"address\": \"123 Main St\",\r\n    \"email\": \"john@tricol.com\",\r\n    \"phone\": \"0600000000\",\r\n    \"city\": \"Safi\",\r\n    \"ice\": 2343412,\r\n    \"contact\": \"John Doe\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{API}}suppliers"
+					},
+					"response": [
+						{
+							"name": "Add supplier",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"company\": \"Tricol\",\r\n    \"address\": \"123 Main St\",\r\n    \"email\": \"john@tricol.com\",\r\n    \"phone\": \"0600000000\",\r\n    \"city\": \"Safi\",\r\n    \"ice\": 2343412,\r\n    \"contact\": \"John Doe\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{API}}suppliers"
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Content-Length",
+									"value": "0"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 22 Oct 2025 13:14:15 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=20"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "Delete supplier",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "{{API}}suppliers/0a78611c-47b0-42bc-93e3-422b333554a2"
+					},
+					"response": [
+						{
+							"name": "200",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": "{{API}}suppliers/0a78611c-47b0-42bc-93e3-422b333554a2"
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Content-Length",
+									"value": "0"
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 25 Oct 2025 10:08:42 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=20"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": null
+						}
+					]
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "API",
+			"value": "",
+			"type": "default"
+		}
+	]
+}
