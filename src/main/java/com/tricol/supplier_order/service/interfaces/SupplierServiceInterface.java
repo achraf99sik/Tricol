@@ -1,6 +1,6 @@
-package com.Tricol.service.interfaces;
+package com.tricol.supplier_order.service.interfaces;
 
-import com.Tricol.model.Supplier;
+import com.tricol.supplier_order.model.Supplier;
 
 import java.util.List;
 import java.util.UUID;

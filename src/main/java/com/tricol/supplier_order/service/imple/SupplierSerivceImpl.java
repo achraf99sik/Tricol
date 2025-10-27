@@ -1,16 +1,18 @@
-package com.Tricol.service.implementation;
+package com.tricol.supplier_order.service.imple;
 
-import com.Tricol.model.Supplier;
-import com.Tricol.repository.interfaces.SuppliersRepositoryInterface;
-import com.Tricol.service.interfaces.SupplierServiceInterface;
+import com.tricol.supplier_order.model.Supplier;
+import com.tricol.supplier_order.repositroy.SuppliersRepositoryInterface;
+import com.tricol.supplier_order.service.interfaces.SupplierServiceInterface;
 import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
 
-public class SupplierService implements SupplierServiceInterface {
+@Service
+public class SupplierSerivceImpl implements SupplierServiceInterface {
     private final SuppliersRepositoryInterface suppliersRepository;
-    public SupplierService(SuppliersRepositoryInterface suppliersRepository) {
+    public SupplierSerivceImpl(SuppliersRepositoryInterface suppliersRepository) {
         this.suppliersRepository = suppliersRepository;
     }
     public Supplier getSupplier(UUID supplierId) {

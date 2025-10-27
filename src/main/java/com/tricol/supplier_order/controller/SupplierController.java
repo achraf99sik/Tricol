@@ -1,7 +1,7 @@
-package com.Tricol.controller;
-
-import com.Tricol.model.Supplier;
-import com.Tricol.service.interfaces.SupplierServiceInterface;
+package com.tricol.supplier_order.controller;
+import com.tricol.supplier_order.model.Supplier;
+import com.tricol.supplier_order.service.interfaces.SupplierServiceInterface;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -9,10 +9,10 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/suppliers")
-public class SuppliersController {
+public class SupplierController {
     private final SupplierServiceInterface supplierService;
 
-    public SuppliersController(SupplierServiceInterface supplierService) {
+    public SupplierController(SupplierServiceInterface supplierService) {
         this.supplierService = supplierService;
     }
     @GetMapping("/{id}")

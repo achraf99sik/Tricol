@@ -1,4 +1,4 @@
-package com.Tricol.model;
+package com.tricol.supplier_order.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

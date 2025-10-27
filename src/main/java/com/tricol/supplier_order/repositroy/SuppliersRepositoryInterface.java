@@ -1,6 +1,6 @@
-package com.Tricol.repository.interfaces;
+package com.tricol.supplier_order.repositroy;
 
-import com.Tricol.model.Supplier;
+import com.tricol.supplier_order.model.Supplier;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 
