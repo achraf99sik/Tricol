@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <changeSet id="3" author="achraf">
+        <createTable tableName="supplier_orders">
+            <column name="id" type="UUID" defaultValueComputed="gen_random_uuid()">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="order_date" type="TIMESTAMP"/>
+            <column name="status" type="VARCHAR(50)"/>
+            <column name="total_amount" type="DECIMAL(10,2)"/>
+            <column name="supplier_id" type="UUID"/>
+            <column name="created_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP"/>
+        </createTable>
+
+        <addForeignKeyConstraint
+                baseTableName="supplier_orders"
+                baseColumnNames="supplier_id"
+                referencedTableName="suppliers"
+                referencedColumnNames="id"
+                constraintName="fk_supplier_order_supplier"/>
+    </changeSet>
+</databaseChangeLog>
