@@ -1,14 +1,15 @@
 package com.tricol.supplier_order.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
+@Table(name = "suppliers")
 public class Supplier {
     @Id
     @GeneratedValue
@@ -20,7 +21,7 @@ public class Supplier {
     private String phone;
     private String city;
     private int ice;
-    @CreatedDate
+    @CreationTimestamp
     private LocalDateTime createdAt;
 
     public Supplier(String company, String address, String contact, String email, String phone, String city, int ice) {

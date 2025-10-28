@@ -1,6 +1,7 @@
 package com.tricol.supplier_order.controller;
 import com.tricol.supplier_order.model.Supplier;
 import com.tricol.supplier_order.service.interfaces.SupplierServiceInterface;
+import com.tricol.supplier_order.util.SortBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -33,7 +34,7 @@ public class SupplierController {
     ) {
         int currentPage = (page != null && page > 0) ? page - 1 : 0;
         int pageSize = (perPage != null && perPage > 0) ? perPage : 10;
-        Sort sort = Sort.by(sortBy, order, searchTerm, searchBy);
+        Sort sort = SortBuilder.BuildSort(sortBy, order);
 
         Pageable pageable = PageRequest.of(currentPage, pageSize, sort);
         return this.supplierService.getSuppliers(sortBy,order, searchTerm, searchBy, pageable);
