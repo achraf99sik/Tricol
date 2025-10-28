@@ -2,10 +2,10 @@ package com.tricol.supplier_order.model;
 
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -23,6 +23,9 @@ public class Supplier {
     private int ice;
     @CreationTimestamp
     private LocalDateTime createdAt;
+
+    @OneToMany(mappedBy = "supplier", cascade = CascadeType.ALL)
+    private List<SupplierOrder> orders = new ArrayList<>();
 
     public Supplier(String company, String address, String contact, String email, String phone, String city, int ice) {
         this.company = company;
