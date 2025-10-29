@@ -23,6 +23,7 @@ public class Product {
 
     private String name;
     private String description;
+    private int quantity;
     private double unitPrice;
     private String category;
     @CreationTimestamp

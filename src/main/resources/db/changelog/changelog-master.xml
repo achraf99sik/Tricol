@@ -10,4 +10,5 @@
     <include file="changeSets/create_supplier_orders_table.xml" relativeToChangelogFile="true"/>
     <include file="changeSets/create_order_products_table.xml" relativeToChangelogFile="true"/>
     <include file="changeSets/create_stock_movements_table.xml" relativeToChangelogFile="true"/>
+    <include file="changeSets/add_quantity_column_products.xml" relativeToChangelogFile="true" />
 </databaseChangeLog>
