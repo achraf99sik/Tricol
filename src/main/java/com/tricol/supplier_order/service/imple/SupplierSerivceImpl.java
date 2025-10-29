@@ -58,8 +58,8 @@ public class SupplierSerivceImpl implements SupplierServiceInterface {
 
 
     @Override
-    public void addSupplier(Supplier supplier) {
-        this.suppliersRepository.save(supplier);
+    public Supplier addSupplier(Supplier supplier) {
+        return this.suppliersRepository.save(supplier);
     }
 
     @Override
@@ -68,7 +68,7 @@ public class SupplierSerivceImpl implements SupplierServiceInterface {
     }
 
     @Override
-    public void updateSupplier(Supplier supplier, UUID supplierId) {
+    public Supplier updateSupplier(Supplier supplier, UUID supplierId) {
         Supplier existingSupplier = suppliersRepository.findById(supplierId)
                 .orElseThrow(() -> new RuntimeException("Supplier not found"));
 
@@ -79,6 +79,6 @@ public class SupplierSerivceImpl implements SupplierServiceInterface {
         existingSupplier.setContact(supplier.getContact());
         existingSupplier.setIce(supplier.getIce());
 
-        suppliersRepository.save(existingSupplier);
+        return suppliersRepository.save(existingSupplier);
     }
 }

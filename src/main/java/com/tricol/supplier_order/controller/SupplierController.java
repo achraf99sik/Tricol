@@ -40,12 +40,12 @@ public class SupplierController {
         return this.supplierService.getSuppliers(sortBy,order, searchTerm, searchBy, pageable);
     }
     @PostMapping
-    public void createSupplier(@RequestBody Supplier supplier) {
-        this.supplierService.addSupplier(supplier);
+    public Supplier createSupplier(@RequestBody Supplier supplier) {
+        return this.supplierService.addSupplier(supplier);
     }
     @PutMapping("/{id}")
-    public void updateSupplier(@RequestBody Supplier supplier,@PathVariable("id")  UUID id) {
-        this.supplierService.updateSupplier(supplier, id);
+    public Supplier updateSupplier(@RequestBody Supplier supplier,@PathVariable("id")  UUID id) {
+        return this.supplierService.updateSupplier(supplier, id);
     }
     @DeleteMapping("/{id}")
     public void deleteSupplier(@PathVariable("id")  UUID id) {
