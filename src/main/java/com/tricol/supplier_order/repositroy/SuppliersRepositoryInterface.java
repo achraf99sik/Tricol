@@ -3,10 +3,8 @@ package com.tricol.supplier_order.repositroy;
 import com.tricol.supplier_order.model.Supplier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
 import java.util.UUID;
 
 public interface SuppliersRepositoryInterface extends JpaRepository<Supplier, UUID> {
