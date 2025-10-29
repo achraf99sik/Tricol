@@ -48,13 +48,42 @@ This is a simple Spring MVC web application for managing suppliers. It provides 
 
 ## API Endpoints
 
-| Method | Endpoint               | Description              |
-|--------|------------------------|--------------------------|
-| GET    | `/api/v1/suppliers`      | Get all suppliers        |
-| GET    | `/api/v1/suppliers/{id}` | Get a supplier by ID     |
-| POST   | `/api/v1/suppliers`      | Create a new supplier    |
-| PUT    | `/api/v1/suppliers/{id}` | Update a supplier        |
-| DELETE | `/api/v1/suppliers/{id}` | Delete a supplier by ID  |
+### Suppliers API
+
+| Method | Endpoint              | Description                     |
+| ------ | --------------------- | ------------------------------- |
+| GET    | `/api/suppliers`      | Get paginated list of suppliers |
+| GET    | `/api/suppliers/{id}` | Get supplier details            |
+| POST   | `/api/suppliers`      | Create new supplier             |
+| PUT    | `/api/suppliers/{id}` | Update supplier                 |
+| DELETE | `/api/suppliers/{id}` | Delete supplier                 |
+
+### Products API
+
+| Method | Endpoint             | Description                    |
+| ------ | -------------------- | ------------------------------ |
+| GET    | `/api/products`      | Get paginated list of products |
+| GET    | `/api/products/{id}` | Get product details            |
+| POST   | `/api/products`      | Create new product             |
+| PUT    | `/api/products/{id}` | Update product                 |
+| DELETE | `/api/products/{id}` | Delete product                 |
+
+### Supplier Orders API
+
+| Method | Endpoint           | Description                                 |
+| ------ | ------------------ | ------------------------------------------- |
+| GET    | `/api/orders`      | Get paginated list of orders                |
+| GET    | `/api/orders/{id}` | Get order details                           |
+| POST   | `/api/orders`      | Create new supplier order (with products)   |
+| PUT    | `/api/orders/{id}` | Update order (status, products, quantities) |
+| DELETE | `/api/orders/{id}` | Cancel/delete order                         |
+
+### Stock Movements API
+
+| Method | Endpoint               | Description                                             |
+| ------ | ---------------------- | ------------------------------------------------------- |
+| GET    | `/api/stock-movements` | Get stock movements with filters (product, type, order) |
+
 
 ## Contributing
 
