@@ -23,15 +23,14 @@ public class SupplierSerivceImpl implements SupplierServiceInterface {
         return this.suppliersRepository.findById(supplierId).orElseThrow(()->new RuntimeException("Supplier not found: "+ supplierId));
     }
     public List<Supplier> getSuppliers(
-            String sortBy, String oder,
+            String sortBy, String order,
             String searchTerm, String searchBy,
             Pageable pageable) {
 
         String sortField = (sortBy != null && !sortBy.isBlank()) ? sortBy : "id";
-        Sort.Direction direction = Optional.ofNullable(oder)
-                .map(String::toUpperCase)
-                .flatMap(Sort.Direction::fromOptionalString)
-                .orElse(Sort.Direction.ASC);
+        Sort.Direction direction = Sort.Direction.fromOptionalString(
+                Optional.ofNullable(order).orElse("ASC")
+        ).orElse(Sort.Direction.ASC);
 
         if (pageable.getSort().isUnsorted()) {
             pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(direction, sortField));
@@ -45,7 +44,14 @@ public class SupplierSerivceImpl implements SupplierServiceInterface {
                 case "email" -> page = suppliersRepository.findByEmailContainingIgnoreCase(searchTerm, pageable);
                 case "phone" -> page = suppliersRepository.findByPhoneContainingIgnoreCase(searchTerm, pageable);
                 case "city" -> page = suppliersRepository.findByCityContainingIgnoreCase(searchTerm, pageable);
-                case "ice" -> page = suppliersRepository.findByIceContainingIgnoreCase(searchTerm, pageable);
+                case "ice" -> {
+                    try {
+                        int ice = Integer.parseInt(searchTerm);
+                        page = suppliersRepository.findByIce(ice, pageable);
+                    } catch (NumberFormatException e) {
+                        page = Page.empty(pageable);
+                    }
+                }
                 case "contact" -> page = suppliersRepository.findByContactContainingIgnoreCase(searchTerm, pageable);
                 default -> page = suppliersRepository.findAll(pageable);
             }

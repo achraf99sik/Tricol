@@ -13,6 +13,6 @@ public interface SuppliersRepositoryInterface extends JpaRepository<Supplier, UU
     public Page<Supplier> findByEmailContainingIgnoreCase(String email, Pageable pageable);
     public Page<Supplier> findByPhoneContainingIgnoreCase(String phone, Pageable pageable);
     public Page<Supplier> findByCityContainingIgnoreCase(String city, Pageable pageable);
-    public Page<Supplier> findByIceContainingIgnoreCase(String ice, Pageable pageable);
+    public Page<Supplier> findByIce(int ice, Pageable pageable);
     public Page<Supplier> findByContactContainingIgnoreCase(String contact, Pageable pageable);
 }
