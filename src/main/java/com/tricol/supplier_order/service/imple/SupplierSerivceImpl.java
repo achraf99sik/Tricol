@@ -1,8 +1,11 @@
 package com.tricol.supplier_order.service.imple;
 
+import com.tricol.supplier_order.dto.SupplierDto;
+import com.tricol.supplier_order.mapper.SupplierMapper;
 import com.tricol.supplier_order.model.Supplier;
 import com.tricol.supplier_order.repositroy.SuppliersRepositoryInterface;
 import com.tricol.supplier_order.service.interfaces.SupplierServiceInterface;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -16,13 +19,15 @@ import java.util.UUID;
 @Service
 public class SupplierSerivceImpl implements SupplierServiceInterface {
     private final SuppliersRepositoryInterface suppliersRepository;
-    public SupplierSerivceImpl(SuppliersRepositoryInterface suppliersRepository) {
+    private final SupplierMapper supplierMapper;
+    public SupplierSerivceImpl(SuppliersRepositoryInterface suppliersRepository, SupplierMapper supplierMapper) {
         this.suppliersRepository = suppliersRepository;
+        this.supplierMapper = supplierMapper;
     }
-    public Supplier getSupplier(UUID supplierId) {
-        return this.suppliersRepository.findById(supplierId).orElseThrow(()->new RuntimeException("Supplier not found: "+ supplierId));
+    public SupplierDto getSupplier(UUID supplierId) {
+        return supplierMapper.toDto(suppliersRepository.findById(supplierId).orElseThrow(()->new RuntimeException("Supplier not found: "+ supplierId)));
     }
-    public List<Supplier> getSuppliers(
+    public List<SupplierDto> getSuppliers(
             String sortBy, String order,
             String searchTerm, String searchBy,
             Pageable pageable) {
@@ -59,7 +64,7 @@ public class SupplierSerivceImpl implements SupplierServiceInterface {
             page = suppliersRepository.findAll(pageable);
         }
 
-        return page.getContent();
+        return supplierMapper.toDtos(page.getContent());
     }
 
 

@@ -1,4 +1,5 @@
 package com.tricol.supplier_order.controller;
+import com.tricol.supplier_order.dto.SupplierDto;
 import com.tricol.supplier_order.model.Supplier;
 import com.tricol.supplier_order.service.interfaces.SupplierServiceInterface;
 import com.tricol.supplier_order.util.SortBuilder;
@@ -19,11 +20,11 @@ public class SupplierController {
         this.supplierService = supplierService;
     }
     @GetMapping("/{id}")
-    public Supplier getSupplier(@PathVariable("id") UUID id) {
+    public SupplierDto getSupplier(@PathVariable("id") UUID id) {
         return this.supplierService.getSupplier(id);
     }
     @GetMapping
-    public List<Supplier> getSuppliers(
+    public List<SupplierDto> getSuppliers(
             @RequestParam(value = "sortBy", required = false) String sortBy,
             @RequestParam(value = "order", required = false) String order,
             @RequestParam(value = "searchTerm", required = false) String searchTerm,
