@@ -2,7 +2,6 @@ package com.tricol.supplier_order.controller;
 import com.tricol.supplier_order.model.Supplier;
 import com.tricol.supplier_order.service.interfaces.SupplierServiceInterface;
 import com.tricol.supplier_order.util.SortBuilder;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
