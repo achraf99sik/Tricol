@@ -7,5 +7,5 @@ import java.util.List;
 import java.util.UUID;
 
 public interface StockMovementServiceInterface {
-    public List<StockMovementDto> getStockMovements();
+    List<StockMovementDto> getStockMovements();
 }

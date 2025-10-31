@@ -7,13 +7,13 @@ import java.util.List;
 import java.util.UUID;
 
 public interface ProductServiceInterface {
-    public ProductDto getProduct(UUID id);
-    public List<ProductDto> getProducts(String sortBy,
-                                        String order,
-                                        String searchTerm,
-                                        String searchBy,
-                                        Pageable pageable);
-    public void deleteProduct(UUID productId);
-    public ProductDto createProduct(ProductDto productDto);
-    public ProductDto updateProduct(ProductDto productDto, UUID productId);
+    ProductDto getProduct(UUID id);
+    List<ProductDto> getProducts(String sortBy,
+                                 String order,
+                                 String searchTerm,
+                                 String searchBy,
+                                 Pageable pageable);
+    void deleteProduct(UUID productId);
+    ProductDto createProduct(ProductDto productDto);
+    ProductDto updateProduct(ProductDto productDto, UUID productId);
 }

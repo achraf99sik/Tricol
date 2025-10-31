@@ -9,9 +9,9 @@ import java.util.List;
 import java.util.UUID;
 
 public interface SupplierServiceInterface {
-    public SupplierDto getSupplier(UUID supplierId);
-    public List<SupplierDto> getSuppliers(String sortBy, String order, String searchTerm, String searchBy, Pageable pageable);
-    public SupplierDto addSupplier(SupplierDto supplier);
-    public void deleteSupplier(UUID supplierId);
-    public SupplierDto updateSupplier(SupplierDto supplier, UUID supplierId);
+    SupplierDto getSupplier(UUID supplierId);
+    List<SupplierDto> getSuppliers(String sortBy, String order, String searchTerm, String searchBy, Pageable pageable);
+    SupplierDto addSupplier(SupplierDto supplier);
+    void deleteSupplier(UUID supplierId);
+    SupplierDto updateSupplier(SupplierDto supplier, UUID supplierId);
 }

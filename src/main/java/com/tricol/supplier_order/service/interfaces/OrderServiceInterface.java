@@ -6,9 +6,9 @@ import java.util.List;
 import java.util.UUID;
 
 public interface OrderServiceInterface {
-    public SupplierOrderDto getSupplierOrder();
-    public List<SupplierOrderDto> getSupplierOrders();
-    public void deleteSupplierOrder(UUID supplierOrderId);
-    public SupplierOrderDto createSupplierOrder(SupplierOrderDto supplierOrderDto);
-    public SupplierOrderDto updateSupplierOrder(SupplierOrderDto supplierOrderDto, UUID supplierOrderId);
+    SupplierOrderDto getSupplierOrder();
+    List<SupplierOrderDto> getSupplierOrders();
+    void deleteSupplierOrder(UUID supplierOrderId);
+    SupplierOrderDto createSupplierOrder(SupplierOrderDto supplierOrderDto);
+    SupplierOrderDto updateSupplierOrder(SupplierOrderDto supplierOrderDto, UUID supplierOrderId);
 }
