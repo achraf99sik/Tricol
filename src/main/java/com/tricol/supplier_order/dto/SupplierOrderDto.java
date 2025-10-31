@@ -20,7 +20,7 @@ public class SupplierOrderDto {
 
     private String status;
 
-    private double totalAmount;
+    private String totalAmount;
 
     private SupplierDto supplier;
 

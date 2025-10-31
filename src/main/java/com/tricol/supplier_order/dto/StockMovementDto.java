@@ -16,7 +16,7 @@ public class StockMovementDto {
 
     private Date date;
 
-    private int quantity;
+    private String quantity;
 
     private String type;
     private SupplierOrderDto supplierOrder;

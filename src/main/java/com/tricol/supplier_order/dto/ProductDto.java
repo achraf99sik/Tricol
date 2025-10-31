@@ -17,8 +17,8 @@ public class ProductDto {
 
     private String name;
     private String description;
-    private int quantity;
-    private double unitPrice;
+    private String quantity;
+    private String unitPrice;
     private String category;
     private LocalDateTime createdAt;
 
