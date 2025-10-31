@@ -11,7 +11,7 @@ import java.util.UUID;
 public interface SupplierServiceInterface {
     public SupplierDto getSupplier(UUID supplierId);
     public List<SupplierDto> getSuppliers(String sortBy, String order, String searchTerm, String searchBy, Pageable pageable);
-    public Supplier addSupplier(Supplier supplier);
+    public SupplierDto addSupplier(SupplierDto supplier);
     public void deleteSupplier(UUID supplierId);
-    public Supplier updateSupplier(Supplier supplier, UUID supplierId);
+    public SupplierDto updateSupplier(SupplierDto supplier, UUID supplierId);
 }

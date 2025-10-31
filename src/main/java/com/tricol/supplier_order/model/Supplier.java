@@ -21,7 +21,7 @@ public class Supplier {
     private UUID id;
     private String company;
     private String address;
-    private String Contact;
+    private String contact;
     private String email;
     private String phone;
     private String city;
@@ -32,13 +32,4 @@ public class Supplier {
     @OneToMany(mappedBy = "supplier", cascade = CascadeType.ALL)
     private List<SupplierOrder> orders = new ArrayList<>();
 
-    public Supplier(String company, String address, String contact, String email, String phone, String city, int ice) {
-        this.company = company;
-        this.address = address;
-        Contact = contact;
-        this.email = email;
-        this.phone = phone;
-        this.city = city;
-        this.ice = ice;
-    }
 }

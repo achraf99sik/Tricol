@@ -16,7 +16,7 @@ public class SupplierDto {
     private UUID id;
     private String company;
     private String address;
-    private String Contact;
+    private String contact;
     private String email;
     private String phone;
     private String city;
