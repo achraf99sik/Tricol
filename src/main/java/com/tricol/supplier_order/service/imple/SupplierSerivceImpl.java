@@ -5,6 +5,7 @@ import com.tricol.supplier_order.mapper.SupplierMapper;
 import com.tricol.supplier_order.model.Supplier;
 import com.tricol.supplier_order.repositroy.SuppliersRepositoryInterface;
 import com.tricol.supplier_order.service.interfaces.SupplierServiceInterface;
+import com.tricol.supplier_order.util.PageableUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -32,14 +33,7 @@ public class SupplierSerivceImpl implements SupplierServiceInterface {
             String searchTerm, String searchBy,
             Pageable pageable) {
 
-        String sortField = (sortBy != null && !sortBy.isBlank()) ? sortBy : "id";
-        Sort.Direction direction = Sort.Direction.fromOptionalString(
-                Optional.ofNullable(order).orElse("ASC")
-        ).orElse(Sort.Direction.ASC);
-
-        if (pageable.getSort().isUnsorted()) {
-            pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(direction, sortField));
-        }
+        pageable = PageableUtil.getPageable(sortBy, order, pageable);
 
         Page<Supplier> page;
         if (searchTerm != null && searchBy != null) {
