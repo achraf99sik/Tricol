@@ -80,16 +80,16 @@ public class SupplierSerivceImpl implements SupplierServiceInterface {
 
     @Override
     public SupplierDto updateSupplier(SupplierDto supplier, UUID supplierId) {
-        Supplier existingSupplier = suppliersRepository.findById(supplierId)
-                .orElseThrow(() -> new RuntimeException("Supplier not found"));
+        SupplierDto existingSupplier = supplierMapper.toDto(suppliersRepository.findById(supplierId)
+                .orElseThrow(() -> new RuntimeException("Supplier not found")));
 
-        existingSupplier.setCompany(supplier.getCompany());
-        existingSupplier.setAddress(supplier.getAddress());
-        existingSupplier.setEmail(supplier.getEmail());
-        existingSupplier.setPhone(supplier.getPhone());
-        existingSupplier.setContact(supplier.getContact());
-        existingSupplier.setIce(supplier.getIce());
+        Optional.ofNullable(supplier.getCompany()).ifPresent(existingSupplier::setCompany);
+        Optional.ofNullable(supplier.getAddress()).ifPresent(existingSupplier::setAddress);
+        Optional.ofNullable(supplier.getEmail()).ifPresent(existingSupplier::setEmail);
+        Optional.ofNullable(supplier.getPhone()).ifPresent(existingSupplier::setPhone);
+        Optional.ofNullable(supplier.getContact()).ifPresent(existingSupplier::setContact);
+        Optional.ofNullable(supplier.getIce()).ifPresent(existingSupplier::setIce);
 
-        return supplierMapper.toDto(suppliersRepository.save(existingSupplier));
+        return supplierMapper.toDto(suppliersRepository.save(supplierMapper.toEntity(existingSupplier)));
     }
 }
