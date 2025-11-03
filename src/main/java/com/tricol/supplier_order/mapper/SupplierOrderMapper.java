@@ -10,6 +10,6 @@ import java.util.List;
 public interface SupplierOrderMapper {
     SupplierOrder toEntity(SupplierOrderDto supplierOrderDto);
     SupplierOrderDto toDto(SupplierOrder supplierOrder);
-    List<SupplierOrderDto> toDtoList(List<SupplierOrder> supplierOrders);
+    List<SupplierOrderDto> toDtos(List<SupplierOrder> supplierOrders);
     List<SupplierOrder> toEntityList(List<SupplierOrderDto> supplierOrderDtos);
 }
