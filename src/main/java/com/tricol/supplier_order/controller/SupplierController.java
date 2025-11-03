@@ -1,10 +1,9 @@
 package com.tricol.supplier_order.controller;
 import com.tricol.supplier_order.dto.SupplierDto;
 import com.tricol.supplier_order.service.interfaces.SupplierServiceInterface;
-import com.tricol.supplier_order.util.SortBuilder;
-import org.springframework.data.domain.PageRequest;
+import com.tricol.supplier_order.util.PageableBuilder;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,11 +30,7 @@ public class SupplierController {
             @RequestParam(value = "page", required = false) Integer page,
             @RequestParam(value = "perPage", required = false) Integer perPage
     ) {
-        int currentPage = (page != null && page > 0) ? page - 1 : 0;
-        int pageSize = (perPage != null && perPage > 0) ? perPage : 10;
-        Sort sort = SortBuilder.BuildSort(sortBy, order);
-
-        Pageable pageable = PageRequest.of(currentPage, pageSize, sort);
+        Pageable pageable = PageableBuilder.buildPageable(sortBy, order, page, perPage);
         return this.supplierService.getSuppliers(sortBy,order, searchTerm, searchBy, pageable);
     }
     @PostMapping
