@@ -8,11 +8,13 @@ import com.tricol.supplier_order.service.interfaces.ProductServiceInterface;
 import com.tricol.supplier_order.util.PageableUtil;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+@Service
 public class ProductServiceImpl implements ProductServiceInterface {
     private final ProductsRepositoryInterface productsRepository;
     private final ProductMapper productMapper;
