@@ -1,6 +1,5 @@
 package com.tricol.supplier_order.controller;
 import com.tricol.supplier_order.dto.SupplierDto;
-import com.tricol.supplier_order.model.Supplier;
 import com.tricol.supplier_order.service.interfaces.SupplierServiceInterface;
 import com.tricol.supplier_order.util.SortBuilder;
 import org.springframework.data.domain.PageRequest;

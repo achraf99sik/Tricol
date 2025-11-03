@@ -18,10 +18,10 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
-public class SupplierSerivceImpl implements SupplierServiceInterface {
+public class SupplierServiceImpl implements SupplierServiceInterface {
     private final SuppliersRepositoryInterface suppliersRepository;
     private final SupplierMapper supplierMapper;
-    public SupplierSerivceImpl(SuppliersRepositoryInterface suppliersRepository, SupplierMapper supplierMapper) {
+    public SupplierServiceImpl(SuppliersRepositoryInterface suppliersRepository, SupplierMapper supplierMapper) {
         this.suppliersRepository = suppliersRepository;
         this.supplierMapper = supplierMapper;
     }
@@ -60,7 +60,6 @@ public class SupplierSerivceImpl implements SupplierServiceInterface {
 
         return supplierMapper.toDtos(page.getContent());
     }
-
 
     @Override
     public SupplierDto addSupplier(SupplierDto supplier) {
