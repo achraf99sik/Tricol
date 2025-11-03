@@ -22,5 +22,4 @@ public class ProductDto {
     private String category;
     private LocalDateTime createdAt;
 
-    private List<SupplierOrderDto> supplierOrders = new ArrayList<>();
 }

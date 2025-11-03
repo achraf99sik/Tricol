@@ -19,6 +19,6 @@ public class StockMovementDto {
     private String quantity;
 
     private String type;
-    private SupplierOrderDto supplierOrder;
+    private UUID supplierOrderId;
     private LocalDateTime createdAt;
 }
