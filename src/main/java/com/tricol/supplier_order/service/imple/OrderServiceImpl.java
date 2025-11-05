@@ -78,9 +78,6 @@ public class OrderServiceImpl implements OrderServiceInterface {
 
     @Override
     public SupplierOrderDto createSupplierOrder(CreateOrderDto order) {
-
-        //Supplier supplier =this.suppliersRepository.findById(order.getSupplier()).orElseThrow(() -> new RuntimeException("Supplier not found with id: " + order.getSupplier()));
-
         List<Product> products = this.productsRepository.findAllById(order.getProducts());
         List<ProductDto> productDtos = this.productMapper.toDtos(products);
         Date orderDate = new Date();

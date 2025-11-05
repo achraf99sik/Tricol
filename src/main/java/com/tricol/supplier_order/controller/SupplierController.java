@@ -2,7 +2,6 @@ package com.tricol.supplier_order.controller;
 import com.tricol.supplier_order.dto.SupplierDto;
 import com.tricol.supplier_order.service.interfaces.SupplierServiceInterface;
 import com.tricol.supplier_order.util.PageableBuilder;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 

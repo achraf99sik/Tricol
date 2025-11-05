@@ -3,10 +3,7 @@ package com.tricol.supplier_order.controller;
 import com.tricol.supplier_order.dto.ProductDto;
 import com.tricol.supplier_order.service.interfaces.ProductServiceInterface;
 import com.tricol.supplier_order.util.PageableBuilder;
-import com.tricol.supplier_order.util.SortBuilder;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
