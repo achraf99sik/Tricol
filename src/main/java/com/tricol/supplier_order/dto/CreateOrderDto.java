@@ -14,5 +14,5 @@ import java.util.UUID;
 public class CreateOrderDto {
     private UUID supplier;
 
-    private List<UUID> products = new ArrayList<>();
+    private List<OrderProduct> products = new ArrayList<>();
 }
