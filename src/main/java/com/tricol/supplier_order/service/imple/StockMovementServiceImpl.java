@@ -1,9 +1,11 @@
 package com.tricol.supplier_order.service.imple;
 
+import com.tricol.supplier_order.dto.OrderProduct;
 import com.tricol.supplier_order.dto.StockMovementDto;
 import com.tricol.supplier_order.enums.MovementType;
 import com.tricol.supplier_order.mapper.StockMovementMapper;
 import com.tricol.supplier_order.model.StockMovement;
+import com.tricol.supplier_order.model.SupplierOrder;
 import com.tricol.supplier_order.repositroy.StockMovementRepositoryInterface;
 import com.tricol.supplier_order.service.interfaces.StockMovementServiceInterface;
 import com.tricol.supplier_order.util.PageableUtil;
@@ -11,6 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Date;
 
@@ -42,5 +45,13 @@ public class StockMovementServiceImpl implements StockMovementServiceInterface {
             page = this.stockMovementRepository.findAll(pageable);
         }
         return this.stockMovementMapper.toDtos(page.getContent());
+    }
+    public void createStockMovements(SupplierOrder supplierOrder, List<OrderProduct> orders) {
+        List<StockMovementDto> stockMovements = new ArrayList<>();
+        orders.forEach(op -> {
+            StockMovementDto movementDto = new StockMovementDto().setSupplierOrderId(supplierOrder.getId()).setDate(new Date()).setQuantity(String.valueOf(op.getQuantity())).setType(MovementType.SORTIE.toString());
+            stockMovements.add(movementDto);
+        });
+        this.stockMovementRepository.saveAll(this.stockMovementMapper.toEntityList(stockMovements));
     }
 }
