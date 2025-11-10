@@ -6,11 +6,8 @@ import com.tricol.supplier_order.model.Supplier;
 import com.tricol.supplier_order.repositroy.SuppliersRepositoryInterface;
 import com.tricol.supplier_order.service.interfaces.SupplierServiceInterface;
 import com.tricol.supplier_order.util.PageableUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

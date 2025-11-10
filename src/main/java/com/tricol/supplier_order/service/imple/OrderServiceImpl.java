@@ -1,13 +1,10 @@
 package com.tricol.supplier_order.service.imple;
 
 import com.tricol.supplier_order.dto.*;
-import com.tricol.supplier_order.enums.MovementType;
 import com.tricol.supplier_order.mapper.ProductMapper;
-import com.tricol.supplier_order.mapper.StockMovementMapper;
 import com.tricol.supplier_order.mapper.SupplierOrderMapper;
 import com.tricol.supplier_order.model.Product;
 import com.tricol.supplier_order.model.StockMovement;
-import com.tricol.supplier_order.model.Supplier;
 import com.tricol.supplier_order.model.SupplierOrder;
 import com.tricol.supplier_order.repositroy.OrdersRepositoryInterface;
 import com.tricol.supplier_order.repositroy.ProductsRepositoryInterface;
@@ -74,19 +71,44 @@ public class OrderServiceImpl implements OrderServiceInterface {
     public void deleteSupplierOrder(UUID supplierOrderId) {
         this.ordersRepository.deleteById(supplierOrderId);
     }
+
     @Override
     public SupplierOrderDto createSupplierOrder(CreateOrderDto order) {
+        List<Product> products = fetchProducts(order);
+        BigDecimal totalPrice = calculateTotalPrice(order, products);
+        SupplierOrder supplierOrder = buildAndSaveSupplierOrder(order, products, totalPrice);
+
+        stockMovementService.createStockMovements(supplierOrder, order.getProducts());
+        updateProductQuantities(products, order);
+
+        supplierOrder = reloadSupplierOrderWithMovements(supplierOrder.getId());
+
+        return supplierOrderMapper.toDto(supplierOrder);
+    }
+    private List<Product> fetchProducts(CreateOrderDto order) {
         List<UUID> productIds = order.getProducts().stream()
-                .map(op -> UUID.fromString(op.getProductId().toString()))
+                .map(OrderProduct::getProductId)
                 .toList();
+
         List<Product> products = productsRepository.findAllById(productIds);
         if (products.isEmpty()) {
             throw new IllegalArgumentException("No valid products found for IDs: " + productIds);
         }
-        BigDecimal totalPrice = products.stream()
-                .map(p -> new BigDecimal(p.getUnitPrice()))
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
 
+        return products;
+    }
+
+    private BigDecimal calculateTotalPrice(CreateOrderDto order, List<Product> products) {
+        return order.getProducts().stream()
+                .map(op -> {
+                    Product product = findProductById(products, op.getProductId());
+                    return new BigDecimal(product.getUnitPrice())
+                            .multiply(BigDecimal.valueOf(op.getQuantity()));
+                })
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    private SupplierOrder buildAndSaveSupplierOrder(CreateOrderDto order, List<Product> products, BigDecimal totalPrice) {
         SupplierOrder supplierOrder = supplierOrderMapper.toEntity(
                 new SupplierOrderDto()
                         .setProducts(productMapper.toDtos(products))
@@ -95,17 +117,35 @@ public class OrderServiceImpl implements OrderServiceInterface {
                         .setTotalAmount(totalPrice.toString())
                         .setStatus("PENDING")
         );
-        supplierOrder = ordersRepository.save(supplierOrder);
+        return ordersRepository.save(supplierOrder);
+    }
 
-        stockMovementService.createStockMovements(supplierOrder, order.getProducts());
+    private void updateProductQuantities(List<Product> products, CreateOrderDto order) {
+        for (OrderProduct op : order.getProducts()) {
+            Product product = findProductById(products, op.getProductId());
+            int newQuantity = product.getQuantity() + op.getQuantity();
+            product.setQuantity(newQuantity);
+        }
+        productsRepository.saveAll(products);
+    }
 
-        supplierOrder = ordersRepository.findById(supplierOrder.getId())
+    private SupplierOrder reloadSupplierOrderWithMovements(UUID orderId) {
+        SupplierOrder supplierOrder = ordersRepository.findById(orderId)
                 .orElseThrow(() -> new RuntimeException("Order not found after save"));
 
-        List<StockMovement> stockMovements = stockMovementRepository.findBySupplierOrderId(supplierOrder.getId(), PageRequest.of(0,10)).getContent();
-        supplierOrder.setStockMovements(stockMovements);
+        List<StockMovement> stockMovements = stockMovementRepository
+                .findBySupplierOrderId(orderId, PageRequest.of(0, 10))
+                .getContent();
 
-        return supplierOrderMapper.toDto(supplierOrder);
+        supplierOrder.setStockMovements(stockMovements);
+        return supplierOrder;
+    }
+
+    private Product findProductById(List<Product> products, UUID productId) {
+        return products.stream()
+                .filter(p -> p.getId().equals(productId))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("Invalid product ID: " + productId));
     }
     @Override
     public SupplierOrderDto updateSupplierOrder(SupplierOrderDto supplierOrderDto, UUID supplierOrderId) {
