@@ -9,9 +9,9 @@ import java.util.Date;
 import java.util.UUID;
 
 public interface OrdersRepositoryInterface extends JpaRepository<SupplierOrder, UUID> {
-    public Page<SupplierOrder> findByStatusContainingIgnoreCase(String status, Pageable pageable);
-    public Page<SupplierOrder> findByOrderDateBefore(Date orderDate, Pageable pageable);
-    public Page<SupplierOrder> findByOrderDateAfter(Date orderDate, Pageable pageable);
-    public Page<SupplierOrder> findByTotalAmountLessThan(double totalAmount, Pageable pageable);
-    public Page<SupplierOrder> findByTotalAmountGreaterThan(double totalAmount, Pageable pageable);
+    Page<SupplierOrder> findByStatusContainingIgnoreCase(String status, Pageable pageable);
+    Page<SupplierOrder> findByOrderDateBefore(Date orderDate, Pageable pageable);
+    Page<SupplierOrder> findByOrderDateAfter(Date orderDate, Pageable pageable);
+    Page<SupplierOrder> findByTotalAmountLessThan(double totalAmount, Pageable pageable);
+    Page<SupplierOrder> findByTotalAmountGreaterThan(double totalAmount, Pageable pageable);
 }

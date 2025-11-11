@@ -11,5 +11,4 @@ public interface SupplierMapper {
     Supplier toEntity(SupplierDto supplierDto);
     SupplierDto toDto(Supplier supplier);
     List<SupplierDto> toDtos(List<Supplier> suppliers);
-    List<Supplier> toEntities(List<SupplierDto> supplierDtos);
 }

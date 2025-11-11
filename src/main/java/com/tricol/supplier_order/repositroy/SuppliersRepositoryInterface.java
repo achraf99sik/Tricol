@@ -8,11 +8,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.UUID;
 
 public interface SuppliersRepositoryInterface extends JpaRepository<Supplier, UUID> {
-    public Page<Supplier> findByCompanyContainingIgnoreCase(String company, Pageable pageable);
-    public Page<Supplier> findByAddressContainingIgnoreCase(String address, Pageable pageable);
-    public Page<Supplier> findByEmailContainingIgnoreCase(String email, Pageable pageable);
-    public Page<Supplier> findByPhoneContainingIgnoreCase(String phone, Pageable pageable);
-    public Page<Supplier> findByCityContainingIgnoreCase(String city, Pageable pageable);
-    public Page<Supplier> findByIce(int ice, Pageable pageable);
-    public Page<Supplier> findByContactContainingIgnoreCase(String contact, Pageable pageable);
+    Page<Supplier> findByCompanyContainingIgnoreCase(String company, Pageable pageable);
+    Page<Supplier> findByAddressContainingIgnoreCase(String address, Pageable pageable);
+    Page<Supplier> findByEmailContainingIgnoreCase(String email, Pageable pageable);
+    Page<Supplier> findByPhoneContainingIgnoreCase(String phone, Pageable pageable);
+    Page<Supplier> findByCityContainingIgnoreCase(String city, Pageable pageable);
+    Page<Supplier> findByIce(int ice, Pageable pageable);
+    Page<Supplier> findByContactContainingIgnoreCase(String contact, Pageable pageable);
 }

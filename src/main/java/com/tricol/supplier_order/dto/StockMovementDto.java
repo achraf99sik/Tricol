@@ -15,7 +15,6 @@ import java.util.UUID;
 @AllArgsConstructor
 public class StockMovementDto {
     private UUID id;
-
     private Date date;
 
     private String quantity;

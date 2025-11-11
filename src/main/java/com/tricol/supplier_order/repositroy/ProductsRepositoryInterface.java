@@ -8,9 +8,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.UUID;
 
 public interface ProductsRepositoryInterface extends JpaRepository<Product, UUID> {
-    public Page<Product> findByNameContainingIgnoreCase(String name, Pageable pageable);
-    public Page<Product> findByDescriptionContainingIgnoreCase(String description, Pageable pageable);
-    public Page<Product> findByUnitPriceLessThan(double unitPrice, Pageable pageable);
-    public Page<Product> findByUnitPriceGreaterThan(double unitPrice, Pageable pageable);
-    public Page<Product> findByCategoryContainingIgnoreCase(String category, Pageable pageable);
+    Page<Product> findByNameContainingIgnoreCase(String name, Pageable pageable);
+    Page<Product> findByDescriptionContainingIgnoreCase(String description, Pageable pageable);
+    Page<Product> findByUnitPriceLessThan(double unitPrice, Pageable pageable);
+    Page<Product> findByUnitPriceGreaterThan(double unitPrice, Pageable pageable);
+    Page<Product> findByCategoryContainingIgnoreCase(String category, Pageable pageable);
 }
