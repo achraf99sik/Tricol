@@ -746,7 +746,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"supplier\": \"4299f58c-0c82-442e-9160-065be2775a2a\",\r\n    \"products\": [\r\n        {\r\n            \r\n            \"productId\":\"0493ad09-4d40-4e7a-8153-08beb651b4b0\",\r\n            \"quantity\": \"12\"\r\n        },\r\n        {\r\n            \r\n            \"productId\":\"0ad87e8a-3eda-454f-9ce1-23054ea680d6\",\r\n            \"quantity\": \"10\"\r\n        }\r\n    ]\r\n}",
+									"raw": "{\r\n    \"supplier\": \"3f6119fd-301b-4d24-9270-101f154ddaaa\",\r\n    \"products\": [\r\n        {\r\n            \r\n            \"productId\":\"0493ad09-4d40-4e7a-8153-08beb651b4b0\",\r\n            \"quantity\": \"3\"\r\n        },\r\n        {\r\n            \r\n            \"productId\":\"0ad87e8a-3eda-454f-9ce1-23054ea680d6\",\r\n            \"quantity\": \"7\"\r\n        }\r\n    ]\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -769,7 +769,7 @@
 								},
 								{
 									"key": "Date",
-									"value": "Wed, 05 Nov 2025 15:21:07 GMT"
+									"value": "Wed, 12 Nov 2025 14:23:19 GMT"
 								},
 								{
 									"key": "Keep-Alive",
@@ -781,7 +781,7 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"id\": \"2c5415ff-2367-43b9-ad13-febac369666b\",\n    \"orderDate\": \"2025-11-05T15:21:07.379+00:00\",\n    \"status\": \"PENDING\",\n    \"totalAmount\": \"1040.4\",\n    \"supplierId\": \"4299f58c-0c82-442e-9160-065be2775a2a\",\n    \"products\": [\n        {\n            \"id\": \"0ad87e8a-3eda-454f-9ce1-23054ea680d6\",\n            \"name\": \"Table\",\n            \"description\": \"Maxime non et. Cum commodi tenetur qui ut itaque. Iste dolor nemo blanditiis non. Dolor consectetur occaecati ad officia libero illo consequatur non aliquid. Non ratione deserunt aliquid doloribus iste libero natus. Dolorum non laudantium earum et in enim magnam.\",\n            \"quantity\": \"364\",\n            \"unitPrice\": \"54.26\",\n            \"category\": \"card\",\n            \"createdAt\": \"2025-11-03T10:49:34.421269\"\n        },\n        {\n            \"id\": \"0493ad09-4d40-4e7a-8153-08beb651b4b0\",\n            \"name\": \"Shirt\",\n            \"description\": \"Accusantium doloribus laborum veniam. Modi dignissimos doloremque. Voluptatum omnis ut maiores et occaecati quae aliquid quis delectus. Consequatur voluptatem perspiciatis.\",\n            \"quantity\": \"802\",\n            \"unitPrice\": \"986.14\",\n            \"category\": \"port\",\n            \"createdAt\": \"2025-11-03T14:54:06.366608\"\n        }\n    ],\n    \"stockMovements\": [\n        {\n            \"id\": \"f9368808-37f0-4ca0-b5b2-36105539911b\",\n            \"date\": \"2025-11-05T15:21:07.441+00:00\",\n            \"quantity\": \"12\",\n            \"type\": \"SORTIE\",\n            \"supplierOrderId\": null,\n            \"createdAt\": \"2025-11-05T16:21:07.443926\"\n        },\n        {\n            \"id\": \"b549bbce-68d9-4112-b420-acb59ddedb43\",\n            \"date\": \"2025-11-05T15:21:07.441+00:00\",\n            \"quantity\": \"10\",\n            \"type\": \"SORTIE\",\n            \"supplierOrderId\": null,\n            \"createdAt\": \"2025-11-05T16:21:07.446932\"\n        }\n    ],\n    \"createdAt\": \"2025-11-05T16:21:07.407993\"\n}"
+							"body": "{\n    \"id\": \"742154c1-509d-4c54-b09e-17e5e8ab239a\",\n    \"orderDate\": \"2025-11-12T14:23:19.638+00:00\",\n    \"status\": \"PENDING\",\n    \"totalAmount\": \"3338.24\",\n    \"supplierId\": \"3f6119fd-301b-4d24-9270-101f154ddaaa\",\n    \"products\": [\n        {\n            \"id\": \"0ad87e8a-3eda-454f-9ce1-23054ea680d6\",\n            \"name\": \"Table\",\n            \"description\": \"Maxime non et. Cum commodi tenetur qui ut itaque. Iste dolor nemo blanditiis non. Dolor consectetur occaecati ad officia libero illo consequatur non aliquid. Non ratione deserunt aliquid doloribus iste libero natus. Dolorum non laudantium earum et in enim magnam.\",\n            \"quantity\": \"373\",\n            \"unitPrice\": \"54.26\",\n            \"category\": \"card\",\n            \"createdAt\": \"2025-11-03T10:49:34.421269\"\n        },\n        {\n            \"id\": \"0493ad09-4d40-4e7a-8153-08beb651b4b0\",\n            \"name\": \"Shirt\",\n            \"description\": \"Accusantium doloribus laborum veniam. Modi dignissimos doloremque. Voluptatum omnis ut maiores et occaecati quae aliquid quis delectus. Consequatur voluptatem perspiciatis.\",\n            \"quantity\": \"796\",\n            \"unitPrice\": \"986.14\",\n            \"category\": \"port\",\n            \"createdAt\": \"2025-11-03T14:54:06.366608\"\n        }\n    ],\n    \"stockMovements\": [\n        {\n            \"id\": \"1910bec4-8d2a-4996-8acc-53f1a2d719e4\",\n            \"date\": \"2025-11-12T14:23:19.649+00:00\",\n            \"quantity\": \"3\",\n            \"type\": \"SORTIE\",\n            \"supplierOrderId\": null,\n            \"createdAt\": \"2025-11-12T15:23:19.651235\"\n        },\n        {\n            \"id\": \"bcc2a40e-8c00-454c-8fcd-4991edcb0093\",\n            \"date\": \"2025-11-12T14:23:19.649+00:00\",\n            \"quantity\": \"7\",\n            \"type\": \"SORTIE\",\n            \"supplierOrderId\": null,\n            \"createdAt\": \"2025-11-12T15:23:19.654261\"\n        }\n    ],\n    \"createdAt\": \"2025-11-12T15:23:19.640919\"\n}"
 						}
 					]
 				}
@@ -841,7 +841,84 @@
 							]
 						}
 					},
-					"response": []
+					"response": [
+						{
+							"name": "200",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{API}}stock-movements",
+									"host": [
+										"{{API}}stock-movements"
+									],
+									"query": [
+										{
+											"key": "searchBy",
+											"value": "quantity_less",
+											"disabled": true
+										},
+										{
+											"key": "searchTerm",
+											"value": "12",
+											"disabled": true
+										},
+										{
+											"key": "order",
+											"value": "desc",
+											"disabled": true
+										},
+										{
+											"key": "sortBy",
+											"value": "ice",
+											"disabled": true
+										},
+										{
+											"key": "page",
+											"value": "1",
+											"disabled": true
+										},
+										{
+											"key": "perPage",
+											"value": "10",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 12 Nov 2025 14:23:59 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"id\": \"05e6bdf0-14f3-4b98-85ac-284ad93f6bce\",\n        \"date\": \"2025-11-05T15:05:29.414+00:00\",\n        \"quantity\": \"12\",\n        \"type\": \"SORTIE\",\n        \"supplierOrderId\": \"41e0c763-d013-498d-8c87-f9c8eda5e488\",\n        \"createdAt\": \"2025-11-05T16:05:29.416744\"\n    },\n    {\n        \"id\": \"0957ba57-5950-4874-9cc4-7016bd79f705\",\n        \"date\": \"2025-11-12T14:23:08.832+00:00\",\n        \"quantity\": \"7\",\n        \"type\": \"SORTIE\",\n        \"supplierOrderId\": \"40a68cfc-fbfc-4863-837f-5ce88380f73f\",\n        \"createdAt\": \"2025-11-12T15:23:08.841866\"\n    },\n    {\n        \"id\": \"0c6118f1-95e5-41ec-8238-e1b52341ce09\",\n        \"date\": \"2025-11-12T14:19:40.723+00:00\",\n        \"quantity\": \"7\",\n        \"type\": \"SORTIE\",\n        \"supplierOrderId\": \"8a9738f4-21fd-464d-9261-815bb65aeda8\",\n        \"createdAt\": \"2025-11-12T15:19:40.731155\"\n    },\n    {\n        \"id\": \"13c31730-3aa2-4972-ba0d-8e8f2ec1823f\",\n        \"date\": \"2025-11-12T14:23:16.383+00:00\",\n        \"quantity\": \"3\",\n        \"type\": \"SORTIE\",\n        \"supplierOrderId\": \"e0dd9473-304f-43fa-8680-82b1a37a9ac4\",\n        \"createdAt\": \"2025-11-12T15:23:16.386203\"\n    },\n    {\n        \"id\": \"1910bec4-8d2a-4996-8acc-53f1a2d719e4\",\n        \"date\": \"2025-11-12T14:23:19.649+00:00\",\n        \"quantity\": \"3\",\n        \"type\": \"SORTIE\",\n        \"supplierOrderId\": \"742154c1-509d-4c54-b09e-17e5e8ab239a\",\n        \"createdAt\": \"2025-11-12T15:23:19.651235\"\n    },\n    {\n        \"id\": \"1c43a89b-e717-4b35-b825-88a5e902dfe2\",\n        \"date\": \"2025-11-10T15:56:55.869+00:00\",\n        \"quantity\": \"10\",\n        \"type\": \"SORTIE\",\n        \"supplierOrderId\": \"9ed93b26-5d06-43cc-9f5e-f68f1f9b9280\",\n        \"createdAt\": \"2025-11-10T16:56:55.873526\"\n    },\n    {\n        \"id\": \"21abebc7-c268-41f4-91b2-d73c8782daf2\",\n        \"date\": \"2025-11-12T14:19:35.573+00:00\",\n        \"quantity\": \"3\",\n        \"type\": \"SORTIE\",\n        \"supplierOrderId\": \"701241e0-044c-4679-b13f-50c8633b804d\",\n        \"createdAt\": \"2025-11-12T15:19:35.575154\"\n    },\n    {\n        \"id\": \"26186173-0a83-4faa-af6b-fa94d8cecdcd\",\n        \"date\": \"2025-11-12T14:23:18.613+00:00\",\n        \"quantity\": \"7\",\n        \"type\": \"SORTIE\",\n        \"supplierOrderId\": \"06ab3437-b602-481d-9e55-934068c89bb8\",\n        \"createdAt\": \"2025-11-12T15:23:18.618369\"\n    },\n    {\n        \"id\": \"28bc6833-f16a-4cb9-aa69-45b4bf0eed86\",\n        \"date\": \"2025-11-10T15:56:26.537+00:00\",\n        \"quantity\": \"1\",\n        \"type\": \"SORTIE\",\n        \"supplierOrderId\": \"5d13c8c9-493f-484e-8585-7a2e89f3d8fe\",\n        \"createdAt\": \"2025-11-10T16:56:26.542849\"\n    },\n    {\n        \"id\": \"3054e7ff-4510-4050-baf3-63cf7ecb506a\",\n        \"date\": \"2025-11-12T14:23:16.383+00:00\",\n        \"quantity\": \"7\",\n        \"type\": \"SORTIE\",\n        \"supplierOrderId\": \"e0dd9473-304f-43fa-8680-82b1a37a9ac4\",\n        \"createdAt\": \"2025-11-12T15:23:16.39022\"\n    }\n]"
+						}
+					]
 				}
 			]
 		}

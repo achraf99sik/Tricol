@@ -123,7 +123,7 @@ public class OrderServiceImpl implements OrderServiceInterface {
     private void updateProductQuantities(List<Product> products, CreateOrderDto order) {
         for (OrderProduct op : order.getProducts()) {
             Product product = findProductById(products, op.getProductId());
-            int newQuantity = product.getQuantity() + op.getQuantity();
+            int newQuantity = product.getQuantity() - op.getQuantity();
             product.setQuantity(newQuantity);
         }
         productsRepository.saveAll(products);
