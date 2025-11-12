@@ -16,4 +16,12 @@
             <column name="created_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP"/>
         </createTable>
     </changeSet>
+    <changeSet id="19" author="achraf">
+        <addColumn tableName="products">
+            <column name="test" type="TEXT"/>
+        </addColumn>
+    </changeSet>
+    <changeSet id="20" author="achraf">
+        <dropColumn tableName="products" columnName="test" />
+    </changeSet>
 </databaseChangeLog>
