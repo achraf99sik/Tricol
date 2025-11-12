@@ -2,6 +2,7 @@ package com.tricol.supplier_order.controller;
 import com.tricol.supplier_order.dto.SupplierDto;
 import com.tricol.supplier_order.service.interfaces.SupplierServiceInterface;
 import com.tricol.supplier_order.util.PageableBuilder;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,11 +34,11 @@ public class SupplierController {
         return this.supplierService.getSuppliers(sortBy,order, searchTerm, searchBy, pageable);
     }
     @PostMapping
-    public SupplierDto createSupplier(@RequestBody SupplierDto supplier) {
+    public SupplierDto createSupplier(@Valid @RequestBody SupplierDto supplier) {
         return this.supplierService.addSupplier(supplier);
     }
     @PutMapping("/{id}")
-    public SupplierDto updateSupplier(@RequestBody SupplierDto supplier,@PathVariable("id")  UUID id) {
+    public SupplierDto updateSupplier(@Valid @RequestBody SupplierDto supplier,@PathVariable("id")  UUID id) {
         return this.supplierService.updateSupplier(supplier, id);
     }
     @DeleteMapping("/{id}")

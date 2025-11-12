@@ -1,5 +1,8 @@
 package com.tricol.supplier_order.dto;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,7 +15,10 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CreateOrderDto {
+    @NotNull(message = "Supplier is required")
     private UUID supplier;
 
+    @Valid
+    @NotEmpty(message = "Products are required")
     private List<OrderProduct> products = new ArrayList<>();
 }

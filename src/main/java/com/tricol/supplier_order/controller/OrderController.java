@@ -4,6 +4,7 @@ import com.tricol.supplier_order.dto.CreateOrderDto;
 import com.tricol.supplier_order.dto.SupplierOrderDto;
 import com.tricol.supplier_order.service.interfaces.OrderServiceInterface;
 import com.tricol.supplier_order.util.PageableBuilder;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,7 +40,7 @@ public class OrderController {
     }
 
     @PostMapping
-    public SupplierOrderDto createSupplierOrder(@RequestBody CreateOrderDto order) {
+    public SupplierOrderDto createSupplierOrder(@Valid @RequestBody CreateOrderDto order) {
         return this.orderService.createSupplierOrder(order);
     }
 
