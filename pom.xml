@@ -11,7 +11,7 @@
   <groupId>com.tricol</groupId>
   <artifactId>supplier-order</artifactId>
   <version>2.0.0-SNAPSHOT</version>
-  <packaging>war</packaging>
+  <packaging>jar</packaging>
   <name>supplier-order</name>
   <description>Supplier order management module for Tricol</description>
   <url/>
