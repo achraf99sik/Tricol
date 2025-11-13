@@ -22,5 +22,8 @@
                 referencedTableName="suppliers"
                 referencedColumnNames="id"
                 constraintName="fk_supplier_order_supplier"/>
+        <modifySql dbms="h2">
+            <replace replace="gen_random_uuid()" with="random_uuid()"/>
+        </modifySql>
     </changeSet>
 </databaseChangeLog>

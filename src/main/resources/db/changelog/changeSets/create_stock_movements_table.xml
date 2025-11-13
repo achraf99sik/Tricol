@@ -15,12 +15,14 @@
             <column name="supplier_order_id" type="UUID"/>
             <column name="created_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP"/>
         </createTable>
-
         <addForeignKeyConstraint
                 baseTableName="stock_movements"
                 baseColumnNames="supplier_order_id"
                 referencedTableName="supplier_orders"
                 referencedColumnNames="id"
                 constraintName="fk_stock_movement_order"/>
+        <modifySql dbms="h2">
+            <replace replace="gen_random_uuid()" with="random_uuid()"/>
+        </modifySql>
     </changeSet>
 </databaseChangeLog>

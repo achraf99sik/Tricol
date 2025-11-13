@@ -15,6 +15,9 @@
             <column name="category" type="VARCHAR(100)"/>
             <column name="created_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP"/>
         </createTable>
+        <modifySql dbms="h2">
+            <replace replace="gen_random_uuid()" with="random_uuid()"/>
+        </modifySql>
     </changeSet>
     <changeSet id="19" author="achraf">
         <addColumn tableName="products">
