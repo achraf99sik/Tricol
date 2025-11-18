@@ -6,9 +6,10 @@ import com.tricol.supplier_order.model.Product;
 import com.tricol.supplier_order.repositroy.ProductsRepositoryInterface;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -23,10 +24,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
+@ExtendWith(MockitoExtension.class)
 class ProductServiceImplTest {
-
-    @InjectMocks
-    private ProductServiceImpl productServiceImpl;
 
     @Mock
     private ProductsRepositoryInterface productsRepository;
@@ -34,78 +33,109 @@ class ProductServiceImplTest {
     @Mock
     private ProductMapper productMapper;
 
+    @InjectMocks
+    private ProductServiceImpl productService;
+
+    private Product product;
+    private ProductDto productDto;
+
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this);
+        UUID productId = UUID.randomUUID();
+        product = new Product();
+        product.setId(productId);
+        product.setName("Test Product");
+
+        productDto = new ProductDto();
+        productDto.setId(productId);
+        productDto.setName("Test Product");
     }
 
     @Test
-    void getProduct_shouldReturnProductDto() {
-        UUID productId = UUID.randomUUID();
-        Product product = new Product();
-        when(productsRepository.findById(productId)).thenReturn(Optional.of(product));
-        when(productMapper.toDto(any(Product.class))).thenReturn(new ProductDto());
+    void getProduct_shouldReturnProductDto_whenProductExists() {
+        when(productsRepository.findById(product.getId())).thenReturn(Optional.of(product));
+        when(productMapper.toDto(product)).thenReturn(productDto);
 
-        ProductDto result = productServiceImpl.getProduct(productId);
+        ProductDto result = productService.getProduct(product.getId());
 
         assertNotNull(result);
-        verify(productsRepository, times(1)).findById(productId);
-        verify(productMapper, times(1)).toDto(any(Product.class));
+        assertEquals(productDto, result);
+        verify(productsRepository).findById(product.getId());
+        verify(productMapper).toDto(product);
     }
 
     @Test
-    void getProducts_shouldReturnListOfProductDto() {
-        Page<Product> page = new PageImpl<>(Collections.singletonList(new Product()));
-        when(productsRepository.findAll(any(Pageable.class))).thenReturn(page);
-        when(productMapper.toDtos(anyList())).thenReturn(Collections.singletonList(new ProductDto()));
+    void getProduct_shouldThrowRuntimeException_whenProductDoesNotExist() {
+        when(productsRepository.findById(any(UUID.class))).thenReturn(Optional.empty());
 
-        List<ProductDto> result = productServiceImpl.getProducts(null, null, null, null, PageRequest.of(0, 10));
+        assertThrows(RuntimeException.class, () -> productService.getProduct(UUID.randomUUID()));
+        verify(productsRepository).findById(any(UUID.class));
+        verify(productMapper, never()).toDto(any(Product.class));
+    }
+
+    @Test
+    void getProducts_shouldReturnListOfProductDtos() {
+        Page<Product> page = new PageImpl<>(Collections.singletonList(product));
+        when(productsRepository.findAll(any(Pageable.class))).thenReturn(page);
+        when(productMapper.toDtos(Collections.singletonList(product))).thenReturn(Collections.singletonList(productDto));
+
+        List<ProductDto> result = productService.getProducts(null, null, null, null, PageRequest.of(0, 10));
 
         assertNotNull(result);
         assertFalse(result.isEmpty());
-        verify(productsRepository, times(1)).findAll(any(Pageable.class));
-        verify(productMapper, times(1)).toDtos(anyList());
+        assertEquals(1, result.size());
+        assertEquals(productDto, result.get(0));
+        verify(productsRepository).findAll(any(Pageable.class));
+        verify(productMapper).toDtos(Collections.singletonList(product));
+    }
+
+    @Test
+    void createProduct_shouldReturnSavedProductDto() {
+        when(productMapper.toEntity(productDto)).thenReturn(product);
+        when(productsRepository.save(product)).thenReturn(product);
+        when(productMapper.toDto(product)).thenReturn(productDto);
+
+        ProductDto result = productService.createProduct(productDto);
+
+        assertNotNull(result);
+        assertEquals(productDto, result);
+        verify(productMapper).toEntity(productDto);
+        verify(productsRepository).save(product);
+        verify(productMapper).toDto(product);
     }
 
     @Test
     void deleteProduct_shouldCallDeleteById() {
         UUID productId = UUID.randomUUID();
+        doNothing().when(productsRepository).deleteById(productId);
 
-        productServiceImpl.deleteProduct(productId);
+        productService.deleteProduct(productId);
 
-        verify(productsRepository, times(1)).deleteById(productId);
+        verify(productsRepository).deleteById(productId);
     }
 
     @Test
-    void createProduct_shouldReturnProductDto() {
-        ProductDto productDto = new ProductDto();
-        Product product = new Product();
-        when(productMapper.toEntity(any(ProductDto.class))).thenReturn(product);
-        when(productsRepository.save(any(Product.class))).thenReturn(product);
-        when(productMapper.toDto(any(Product.class))).thenReturn(productDto);
+    void updateProduct_shouldReturnUpdatedProductDto_whenProductExists() {
+        when(productsRepository.findById(product.getId())).thenReturn(Optional.of(product));
+        when(productMapper.toDto(product)).thenReturn(productDto);
+        when(productsRepository.save(product)).thenReturn(product);
 
-        ProductDto result = productServiceImpl.createProduct(productDto);
+        ProductDto result = productService.updateProduct(productDto, product.getId());
 
         assertNotNull(result);
-        verify(productMapper, times(1)).toEntity(any(ProductDto.class));
-        verify(productsRepository, times(1)).save(any(Product.class));
-        verify(productMapper, times(1)).toDto(any(Product.class));
+        assertEquals(productDto, result);
+        verify(productsRepository).findById(product.getId());
+        verify(productMapper).toDto(product);
+        verify(productsRepository).save(product);
     }
 
     @Test
-    void updateProduct_shouldReturnUpdatedProductDto() {
-        UUID productId = UUID.randomUUID();
-        ProductDto productDto = new ProductDto();
-        Product existingProduct = new Product();
-        when(productsRepository.findById(productId)).thenReturn(Optional.of(existingProduct));
-        when(productMapper.toDto(any(Product.class))).thenReturn(new ProductDto());
-        when(productMapper.toEntity(any(ProductDto.class))).thenReturn(existingProduct);
-        when(productsRepository.save(any(Product.class))).thenReturn(existingProduct);
+    void updateProduct_shouldThrowRuntimeException_whenProductDoesNotExist() {
+        when(productsRepository.findById(any(UUID.class))).thenReturn(Optional.empty());
 
-        ProductDto result = productServiceImpl.updateProduct(productDto, productId);
-
-        assertNotNull(result);
-        verify(productsRepository, times(1)).findById(productId);
-        verify(productsRepository, times(1)).save(any(Product.class));
+        assertThrows(RuntimeException.class, () -> productService.updateProduct(productDto, UUID.randomUUID()));
+        verify(productsRepository).findById(any(UUID.class));
+        verify(productMapper, never()).toDto(any(Product.class));
+        verify(productsRepository, never()).save(any(Product.class));
     }
 }

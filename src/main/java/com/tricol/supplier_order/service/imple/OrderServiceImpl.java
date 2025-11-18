@@ -149,10 +149,16 @@ public class OrderServiceImpl implements OrderServiceInterface {
     }
     @Override
     public SupplierOrderDto updateSupplierOrder(SupplierOrderDto supplierOrderDto, UUID supplierOrderId) {
-        SupplierOrderDto existingOrder = this.supplierOrderMapper.toDto(this.ordersRepository.findById(supplierOrderId).orElseThrow(() -> new RuntimeException("Order not found with id: " + supplierOrderId)));
+        SupplierOrder existingOrder = ordersRepository.findById(supplierOrderId)
+                .orElseThrow(() -> new RuntimeException("Order not found with id: " + supplierOrderId));
+
         Optional.ofNullable(supplierOrderDto.getOrderDate()).ifPresent(existingOrder::setOrderDate);
-        Optional.ofNullable(supplierOrderDto.getTotalAmount()).ifPresent(existingOrder::setTotalAmount);
+        Optional.ofNullable(supplierOrderDto.getTotalAmount()).map(Double::parseDouble).ifPresent(existingOrder::setTotalAmount);
         Optional.ofNullable(supplierOrderDto.getStatus()).ifPresent(existingOrder::setStatus);
-        return this.supplierOrderMapper.toDto(this.ordersRepository.save(this.supplierOrderMapper.toEntity(existingOrder)));
+
+        SupplierOrder savedOrder = ordersRepository.save(existingOrder);
+
+        return supplierOrderMapper.toDto(savedOrder);
     }
+
 }

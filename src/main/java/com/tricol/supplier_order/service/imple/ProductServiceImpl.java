@@ -64,12 +64,17 @@ public class ProductServiceImpl implements ProductServiceInterface {
 
     @Override
     public ProductDto updateProduct(ProductDto productDto, UUID productId) {
-        ProductDto existingProduct = this.productMapper.toDto(this.productsRepository.findById(productId).orElseThrow(()-> new RuntimeException("Product not found with id: " + productId)));
+        Product existingProduct = productsRepository.findById(productId)
+                .orElseThrow(() -> new RuntimeException("Product not found with id: " + productId));
+
         Optional.ofNullable(productDto.getName()).ifPresent(existingProduct::setName);
         Optional.ofNullable(productDto.getDescription()).ifPresent(existingProduct::setDescription);
-        Optional.ofNullable(productDto.getUnitPrice()).ifPresent(existingProduct::setUnitPrice);
+        Optional.ofNullable(productDto.getUnitPrice()).map(Double::parseDouble).ifPresent(existingProduct::setUnitPrice);
         Optional.ofNullable(productDto.getCategory()).ifPresent(existingProduct::setCategory);
-        Optional.ofNullable(productDto.getQuantity()).ifPresent(existingProduct::setQuantity);
-        return this.productMapper.toDto(this.productsRepository.save(productMapper.toEntity(existingProduct)));
+        Optional.ofNullable(productDto.getQuantity()).map(Integer::parseInt).ifPresent(existingProduct::setQuantity);
+
+        Product saved = productsRepository.save(existingProduct);
+
+        return productMapper.toDto(saved);
     }
 }

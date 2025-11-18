@@ -69,17 +69,18 @@ public class SupplierServiceImpl implements SupplierServiceInterface {
     }
 
     @Override
-    public SupplierDto updateSupplier(SupplierDto supplier, UUID supplierId) {
-        SupplierDto existingSupplier = supplierMapper.toDto(suppliersRepository.findById(supplierId)
-                .orElseThrow(() -> new RuntimeException("Supplier not found")));
+    public SupplierDto updateSupplier(SupplierDto supplierDto, UUID supplierId) {
+        Supplier existingSupplier = suppliersRepository.findById(supplierId)
+                .orElseThrow(() -> new RuntimeException("Supplier not found"));
 
-        Optional.ofNullable(supplier.getCompany()).ifPresent(existingSupplier::setCompany);
-        Optional.ofNullable(supplier.getAddress()).ifPresent(existingSupplier::setAddress);
-        Optional.ofNullable(supplier.getEmail()).ifPresent(existingSupplier::setEmail);
-        Optional.ofNullable(supplier.getPhone()).ifPresent(existingSupplier::setPhone);
-        Optional.ofNullable(supplier.getContact()).ifPresent(existingSupplier::setContact);
-        Optional.ofNullable(supplier.getIce()).ifPresent(existingSupplier::setIce);
+        Optional.ofNullable(supplierDto.getCompany()).ifPresent(existingSupplier::setCompany);
+        Optional.ofNullable(supplierDto.getAddress()).ifPresent(existingSupplier::setAddress);
+        Optional.ofNullable(supplierDto.getEmail()).ifPresent(existingSupplier::setEmail);
+        Optional.ofNullable(supplierDto.getPhone()).ifPresent(existingSupplier::setPhone);
+        Optional.ofNullable(supplierDto.getContact()).ifPresent(existingSupplier::setContact);
+        Optional.ofNullable(supplierDto.getIce()).map(Integer::parseInt).ifPresent(existingSupplier::setIce);
+        Supplier saved = suppliersRepository.save(existingSupplier);
 
-        return supplierMapper.toDto(suppliersRepository.save(supplierMapper.toEntity(existingSupplier)));
+        return supplierMapper.toDto(saved);
     }
 }
