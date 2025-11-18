@@ -48,7 +48,7 @@ public class OrderServiceImpl implements OrderServiceInterface {
 
     @Override
     public SupplierOrderDto getSupplierOrder(UUID supplierOrderId) {
-        return this.supplierOrderMapper.toDto(this.ordersRepository.findById(supplierOrderId).orElseThrow(() -> new RuntimeException("Order not found with id: " + supplierOrderId)));
+        return this.supplierOrderMapper.toDto(this.ordersRepository.findById(supplierOrderId).orElseThrow(() -> new NoSuchElementException("Order not found with id: " + supplierOrderId)));
     }
 
     @Override
@@ -131,13 +131,13 @@ public class OrderServiceImpl implements OrderServiceInterface {
 
     private SupplierOrder reloadSupplierOrderWithMovements(UUID orderId) {
         SupplierOrder supplierOrder = ordersRepository.findById(orderId)
-                .orElseThrow(() -> new RuntimeException("Order not found after save"));
+                .orElseThrow(() -> new NoSuchElementException("Order not found after save"));
 
         List<StockMovement> stockMovements = stockMovementRepository
                 .findBySupplierOrderId(orderId, PageRequest.of(0, 10))
                 .getContent();
 
-        supplierOrder.setStockMovements(stockMovements);
+        supplierOrder.setStockMovements(new ArrayList<>(stockMovements));
         return supplierOrder;
     }
 
@@ -150,10 +150,10 @@ public class OrderServiceImpl implements OrderServiceInterface {
     @Override
     public SupplierOrderDto updateSupplierOrder(SupplierOrderDto supplierOrderDto, UUID supplierOrderId) {
         SupplierOrder existingOrder = ordersRepository.findById(supplierOrderId)
-                .orElseThrow(() -> new RuntimeException("Order not found with id: " + supplierOrderId));
+                .orElseThrow(() -> new NoSuchElementException("Order not found with id: " + supplierOrderId));
 
         Optional.ofNullable(supplierOrderDto.getOrderDate()).ifPresent(existingOrder::setOrderDate);
-        Optional.ofNullable(supplierOrderDto.getTotalAmount()).map(Double::parseDouble).ifPresent(existingOrder::setTotalAmount);
+        Optional.ofNullable(supplierOrderDto.getTotalAmount()).ifPresent(s -> existingOrder.setTotalAmount(Double.parseDouble(s)));
         Optional.ofNullable(supplierOrderDto.getStatus()).ifPresent(existingOrder::setStatus);
 
         SupplierOrder savedOrder = ordersRepository.save(existingOrder);

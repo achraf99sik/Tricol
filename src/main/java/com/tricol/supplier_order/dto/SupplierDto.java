@@ -28,7 +28,7 @@ public class SupplierDto {
 
     private String phone;
     private String city;
-    private String ice;
+    private int ice;
     private LocalDateTime createdAt;
 
     private List<SupplierOrderDto> orders = new ArrayList<>();

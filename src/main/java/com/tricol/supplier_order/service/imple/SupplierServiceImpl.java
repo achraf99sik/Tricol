@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -23,7 +24,7 @@ public class SupplierServiceImpl implements SupplierServiceInterface {
         this.supplierMapper = supplierMapper;
     }
     public SupplierDto getSupplier(UUID supplierId) {
-        return supplierMapper.toDto(suppliersRepository.findById(supplierId).orElseThrow(()->new RuntimeException("Supplier not found: "+ supplierId)));
+        return supplierMapper.toDto(suppliersRepository.findById(supplierId).orElseThrow(()->new NoSuchElementException("Supplier not found: "+ supplierId)));
     }
     public List<SupplierDto> getSuppliers(
             String sortBy, String order,
@@ -71,14 +72,14 @@ public class SupplierServiceImpl implements SupplierServiceInterface {
     @Override
     public SupplierDto updateSupplier(SupplierDto supplierDto, UUID supplierId) {
         Supplier existingSupplier = suppliersRepository.findById(supplierId)
-                .orElseThrow(() -> new RuntimeException("Supplier not found"));
+                .orElseThrow(() -> new NoSuchElementException("Supplier not found"));
 
         Optional.ofNullable(supplierDto.getCompany()).ifPresent(existingSupplier::setCompany);
         Optional.ofNullable(supplierDto.getAddress()).ifPresent(existingSupplier::setAddress);
         Optional.ofNullable(supplierDto.getEmail()).ifPresent(existingSupplier::setEmail);
         Optional.ofNullable(supplierDto.getPhone()).ifPresent(existingSupplier::setPhone);
         Optional.ofNullable(supplierDto.getContact()).ifPresent(existingSupplier::setContact);
-        Optional.ofNullable(supplierDto.getIce()).map(Integer::parseInt).ifPresent(existingSupplier::setIce);
+        Optional.of(supplierDto.getIce()).ifPresent(existingSupplier::setIce);
         Supplier saved = suppliersRepository.save(existingSupplier);
 
         return supplierMapper.toDto(saved);

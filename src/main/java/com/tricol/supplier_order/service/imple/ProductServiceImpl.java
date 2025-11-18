@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.NoSuchElementException;
 import java.util.UUID;
 
 @Service
@@ -24,7 +25,7 @@ public class ProductServiceImpl implements ProductServiceInterface {
     }
     @Override
     public ProductDto getProduct(UUID productId) {
-        return this.productMapper.toDto(this.productsRepository.findById(productId).orElseThrow(() -> new RuntimeException("Product not found with id: " + productId)));
+        return this.productMapper.toDto(this.productsRepository.findById(productId).orElseThrow(() -> new NoSuchElementException("Product not found with id: " + productId)));
     }
 
     @Override
@@ -65,13 +66,13 @@ public class ProductServiceImpl implements ProductServiceInterface {
     @Override
     public ProductDto updateProduct(ProductDto productDto, UUID productId) {
         Product existingProduct = productsRepository.findById(productId)
-                .orElseThrow(() -> new RuntimeException("Product not found with id: " + productId));
+                .orElseThrow(() -> new NoSuchElementException("Product not found with id: " + productId));
 
         Optional.ofNullable(productDto.getName()).ifPresent(existingProduct::setName);
         Optional.ofNullable(productDto.getDescription()).ifPresent(existingProduct::setDescription);
-        Optional.ofNullable(productDto.getUnitPrice()).map(Double::parseDouble).ifPresent(existingProduct::setUnitPrice);
+        Optional.of(productDto.getUnitPrice()).ifPresent(existingProduct::setUnitPrice);
         Optional.ofNullable(productDto.getCategory()).ifPresent(existingProduct::setCategory);
-        Optional.ofNullable(productDto.getQuantity()).map(Integer::parseInt).ifPresent(existingProduct::setQuantity);
+        Optional.of(productDto.getQuantity()).ifPresent(existingProduct::setQuantity);
 
         Product saved = productsRepository.save(existingProduct);
 
