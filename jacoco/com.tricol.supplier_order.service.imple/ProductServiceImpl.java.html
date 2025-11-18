@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ProductServiceImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">supplier-order</a> &gt; <a href="index.source.html" class="el_package">com.tricol.supplier_order.service.imple</a> &gt; <span class="el_source">ProductServiceImpl.java</span></div><h1>ProductServiceImpl.java</h1><pre class="source lang-java linenums">package com.tricol.supplier_order.service.imple;
+
+import com.tricol.supplier_order.dto.ProductDto;
+import com.tricol.supplier_order.mapper.ProductMapper;
+import com.tricol.supplier_order.model.Product;
+import com.tricol.supplier_order.repositroy.ProductsRepositoryInterface;
+import com.tricol.supplier_order.service.interfaces.ProductServiceInterface;
+import com.tricol.supplier_order.util.PageableUtil;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.NoSuchElementException;
+import java.util.UUID;
+
+@Service
+public class ProductServiceImpl implements ProductServiceInterface {
+    private final ProductsRepositoryInterface productsRepository;
+    private final ProductMapper productMapper;
+<span class="fc" id="L22">    public ProductServiceImpl(ProductsRepositoryInterface productsRepository, ProductMapper productMapper) {</span>
+<span class="fc" id="L23">        this.productsRepository = productsRepository;</span>
+<span class="fc" id="L24">        this.productMapper = productMapper;</span>
+<span class="fc" id="L25">    }</span>
+    @Override
+    public ProductDto getProduct(UUID productId) {
+<span class="fc" id="L28">        return this.productMapper.toDto(this.productsRepository.findById(productId).orElseThrow(() -&gt; new NoSuchElementException(&quot;Product not found with id: &quot; + productId)));</span>
+    }
+
+    @Override
+    public List&lt;ProductDto&gt; getProducts(
+            String sortBy,
+            String order,
+            String searchTerm,
+            String searchBy,
+            Pageable pageable
+    ) {
+<span class="fc" id="L39">        pageable = PageableUtil.getPageable(sortBy, order, pageable);</span>
+        Page&lt;Product&gt; page;
+<span class="pc bpc" id="L41" title="3 of 4 branches missed.">        if (searchTerm != null &amp;&amp; searchBy != null) {</span>
+<span class="nc bnc" id="L42" title="All 6 branches missed.">            switch (searchBy.toLowerCase()){</span>
+<span class="nc" id="L43">                case &quot;name&quot;-&gt; page = this.productsRepository.findByNameContainingIgnoreCase(searchTerm, pageable);</span>
+<span class="nc" id="L44">                case &quot;description&quot;-&gt; page = this.productsRepository.findByDescriptionContainingIgnoreCase(searchTerm, pageable);</span>
+<span class="nc" id="L45">                case &quot;price_less&quot; -&gt; page = this.productsRepository.findByUnitPriceLessThan(Double.parseDouble(searchTerm), pageable);</span>
+<span class="nc" id="L46">                case &quot;price_greater&quot; -&gt; page = this.productsRepository.findByUnitPriceGreaterThan(Double.parseDouble(searchTerm), pageable);</span>
+<span class="nc" id="L47">                case &quot;category&quot; -&gt; page = this.productsRepository.findByCategoryContainingIgnoreCase(searchTerm, pageable);</span>
+<span class="nc" id="L48">                default -&gt; page = this.productsRepository.findAll(pageable);</span>
+<span class="nc" id="L49">            }</span>
+        }else {
+<span class="fc" id="L51">            page = this.productsRepository.findAll(pageable);</span>
+        }
+<span class="fc" id="L53">        return this.productMapper.toDtos(page.getContent());</span>
+    }
+
+    @Override
+    public void deleteProduct(UUID productId) {
+<span class="fc" id="L58">        this.productsRepository.deleteById(productId);</span>
+<span class="fc" id="L59">    }</span>
+
+    @Override
+    public ProductDto createProduct(ProductDto productDto) {
+<span class="fc" id="L63">        return this.productMapper.toDto(this.productsRepository.save(productMapper.toEntity(productDto)));</span>
+    }
+
+    @Override
+    public ProductDto updateProduct(ProductDto productDto, UUID productId) {
+<span class="fc" id="L68">        Product existingProduct = productsRepository.findById(productId)</span>
+<span class="fc" id="L69">                .orElseThrow(() -&gt; new NoSuchElementException(&quot;Product not found with id: &quot; + productId));</span>
+
+<span class="fc" id="L71">        Optional.ofNullable(productDto.getName()).ifPresent(existingProduct::setName);</span>
+<span class="fc" id="L72">        Optional.ofNullable(productDto.getDescription()).ifPresent(existingProduct::setDescription);</span>
+<span class="fc" id="L73">        Optional.of(productDto.getUnitPrice()).ifPresent(existingProduct::setUnitPrice);</span>
+<span class="fc" id="L74">        Optional.ofNullable(productDto.getCategory()).ifPresent(existingProduct::setCategory);</span>
+<span class="fc" id="L75">        Optional.of(productDto.getQuantity()).ifPresent(existingProduct::setQuantity);</span>
+
+<span class="fc" id="L77">        Product saved = productsRepository.save(existingProduct);</span>
+
+<span class="fc" id="L79">        return productMapper.toDto(saved);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>StockMovementServiceImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">supplier-order</a> &gt; <a href="index.source.html" class="el_package">com.tricol.supplier_order.service.imple</a> &gt; <span class="el_source">StockMovementServiceImpl.java</span></div><h1>StockMovementServiceImpl.java</h1><pre class="source lang-java linenums">package com.tricol.supplier_order.service.imple;
+
+import com.tricol.supplier_order.dto.OrderProduct;
+import com.tricol.supplier_order.dto.StockMovementDto;
+import com.tricol.supplier_order.enums.MovementType;
+import com.tricol.supplier_order.mapper.StockMovementMapper;
+import com.tricol.supplier_order.model.StockMovement;
+import com.tricol.supplier_order.model.SupplierOrder;
+import com.tricol.supplier_order.repositroy.StockMovementRepositoryInterface;
+import com.tricol.supplier_order.service.interfaces.StockMovementServiceInterface;
+import com.tricol.supplier_order.util.PageableUtil;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Date;
+
+@Service
+public class StockMovementServiceImpl implements StockMovementServiceInterface {
+
+    private final StockMovementRepositoryInterface stockMovementRepository;
+    private final StockMovementMapper stockMovementMapper;
+
+<span class="fc" id="L26">    public StockMovementServiceImpl(StockMovementRepositoryInterface stockMovementRepository, StockMovementMapper stockMovementMapper) {</span>
+<span class="fc" id="L27">        this.stockMovementRepository = stockMovementRepository;</span>
+<span class="fc" id="L28">        this.stockMovementMapper = stockMovementMapper;</span>
+<span class="fc" id="L29">    }</span>
+
+    @Override
+    public List&lt;StockMovementDto&gt; getStockMovements(String sortBy, String order, String searchTerm, String searchBy, Pageable pageable) {
+<span class="fc" id="L33">        pageable = PageableUtil.getPageable(sortBy, order, pageable);</span>
+        Page&lt;StockMovement&gt; page;
+<span class="pc bpc" id="L35" title="3 of 4 branches missed.">        if (searchTerm != null &amp;&amp; searchBy != null) {</span>
+<span class="nc bnc" id="L36" title="All 6 branches missed.">            switch (searchBy.toLowerCase()) {</span>
+<span class="nc" id="L37">                case &quot;type&quot; -&gt; page = this.stockMovementRepository.findByType(MovementType.valueOf(searchTerm.toUpperCase()), pageable);</span>
+<span class="nc" id="L38">                case &quot;date_after&quot; -&gt; page = this.stockMovementRepository.findByDateAfter(new Date(Long.parseLong(searchTerm)), pageable);</span>
+<span class="nc" id="L39">                case &quot;date_before&quot; -&gt; page = this.stockMovementRepository.findByDateBefore(new Date(Long.parseLong(searchTerm)), pageable);</span>
+<span class="nc" id="L40">                case &quot;quantity_greater&quot; -&gt; page = this.stockMovementRepository.findByQuantityGreaterThan(Integer.parseInt(searchTerm), pageable);</span>
+<span class="nc" id="L41">                case &quot;quantity_less&quot; -&gt; page = this.stockMovementRepository.findByQuantityLessThan(Integer.parseInt(searchTerm), pageable);</span>
+<span class="nc" id="L42">                default -&gt; page = this.stockMovementRepository.findAll(pageable);</span>
+<span class="nc" id="L43">            }</span>
+        } else {
+<span class="fc" id="L45">            page = this.stockMovementRepository.findAll(pageable);</span>
+        }
+<span class="fc" id="L47">        return this.stockMovementMapper.toDtos(page.getContent());</span>
+    }
+    public void createStockMovements(SupplierOrder supplierOrder, List&lt;OrderProduct&gt; orders) {
+<span class="fc" id="L50">        List&lt;StockMovementDto&gt; stockMovements = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L51">        orders.forEach(op -&gt; {</span>
+<span class="fc" id="L52">            StockMovementDto movementDto = new StockMovementDto().setSupplierOrderId(supplierOrder.getId()).setDate(new Date()).setQuantity(String.valueOf(op.getQuantity())).setType(MovementType.SORTIE.toString());</span>
+<span class="fc" id="L53">            stockMovements.add(movementDto);</span>
+<span class="fc" id="L54">        });</span>
+<span class="fc" id="L55">        this.stockMovementRepository.saveAll(this.stockMovementMapper.toEntityList(stockMovements));</span>
+<span class="fc" id="L56">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

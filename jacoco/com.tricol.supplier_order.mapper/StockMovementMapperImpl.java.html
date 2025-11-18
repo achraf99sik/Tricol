@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>StockMovementMapperImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">supplier-order</a> &gt; <a href="index.source.html" class="el_package">com.tricol.supplier_order.mapper</a> &gt; <span class="el_source">StockMovementMapperImpl.java</span></div><h1>StockMovementMapperImpl.java</h1><pre class="source lang-java linenums">package com.tricol.supplier_order.mapper;
+
+import com.tricol.supplier_order.dto.StockMovementDto;
+import com.tricol.supplier_order.enums.MovementType;
+import com.tricol.supplier_order.model.StockMovement;
+import com.tricol.supplier_order.model.SupplierOrder;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+import javax.annotation.processing.Generated;
+import org.springframework.stereotype.Component;
+
+@Generated(
+    value = &quot;org.mapstruct.ap.MappingProcessor&quot;,
+    date = &quot;2025-11-19T00:18:38+0100&quot;,
+    comments = &quot;version: 1.6.3, compiler: javac, environment: Java 17.0.16 (OpenLogic)&quot;
+)
+@Component
+<span class="fc" id="L19">public class StockMovementMapperImpl implements StockMovementMapper {</span>
+
+    @Override
+    public StockMovement toEntity(StockMovementDto dto) {
+<span class="pc bpc" id="L23" title="1 of 2 branches missed.">        if ( dto == null ) {</span>
+<span class="nc" id="L24">            return null;</span>
+        }
+
+<span class="fc" id="L27">        StockMovement stockMovement = new StockMovement();</span>
+
+<span class="fc" id="L29">        stockMovement.setSupplierOrder( stockMovementDtoToSupplierOrder( dto ) );</span>
+<span class="fc" id="L30">        stockMovement.setId( dto.getId() );</span>
+<span class="fc" id="L31">        stockMovement.setDate( dto.getDate() );</span>
+<span class="pc bpc" id="L32" title="1 of 2 branches missed.">        if ( dto.getQuantity() != null ) {</span>
+<span class="fc" id="L33">            stockMovement.setQuantity( Integer.parseInt( dto.getQuantity() ) );</span>
+        }
+<span class="pc bpc" id="L35" title="1 of 2 branches missed.">        if ( dto.getType() != null ) {</span>
+<span class="fc" id="L36">            stockMovement.setType( Enum.valueOf( MovementType.class, dto.getType() ) );</span>
+        }
+<span class="fc" id="L38">        stockMovement.setCreatedAt( dto.getCreatedAt() );</span>
+
+<span class="fc" id="L40">        return stockMovement;</span>
+    }
+
+    @Override
+    public StockMovementDto toDto(StockMovement entity) {
+<span class="pc bpc" id="L45" title="1 of 2 branches missed.">        if ( entity == null ) {</span>
+<span class="nc" id="L46">            return null;</span>
+        }
+
+<span class="fc" id="L49">        StockMovementDto stockMovementDto = new StockMovementDto();</span>
+
+<span class="fc" id="L51">        stockMovementDto.setSupplierOrderId( entitySupplierOrderId( entity ) );</span>
+<span class="fc" id="L52">        stockMovementDto.setId( entity.getId() );</span>
+<span class="fc" id="L53">        stockMovementDto.setDate( entity.getDate() );</span>
+<span class="fc" id="L54">        stockMovementDto.setQuantity( String.valueOf( entity.getQuantity() ) );</span>
+<span class="pc bpc" id="L55" title="1 of 2 branches missed.">        if ( entity.getType() != null ) {</span>
+<span class="fc" id="L56">            stockMovementDto.setType( entity.getType().name() );</span>
+        }
+<span class="fc" id="L58">        stockMovementDto.setCreatedAt( entity.getCreatedAt() );</span>
+
+<span class="fc" id="L60">        return stockMovementDto;</span>
+    }
+
+    @Override
+    public List&lt;StockMovementDto&gt; toDtos(List&lt;StockMovement&gt; stockMovement) {
+<span class="pc bpc" id="L65" title="1 of 2 branches missed.">        if ( stockMovement == null ) {</span>
+<span class="nc" id="L66">            return null;</span>
+        }
+
+<span class="fc" id="L69">        List&lt;StockMovementDto&gt; list = new ArrayList&lt;StockMovementDto&gt;( stockMovement.size() );</span>
+<span class="fc bfc" id="L70" title="All 2 branches covered.">        for ( StockMovement stockMovement1 : stockMovement ) {</span>
+<span class="fc" id="L71">            list.add( toDto( stockMovement1 ) );</span>
+<span class="fc" id="L72">        }</span>
+
+<span class="fc" id="L74">        return list;</span>
+    }
+
+    @Override
+    public List&lt;StockMovement&gt; toEntityList(List&lt;StockMovementDto&gt; stockMovementDtos) {
+<span class="pc bpc" id="L79" title="1 of 2 branches missed.">        if ( stockMovementDtos == null ) {</span>
+<span class="nc" id="L80">            return null;</span>
+        }
+
+<span class="fc" id="L83">        List&lt;StockMovement&gt; list = new ArrayList&lt;StockMovement&gt;( stockMovementDtos.size() );</span>
+<span class="fc bfc" id="L84" title="All 2 branches covered.">        for ( StockMovementDto stockMovementDto : stockMovementDtos ) {</span>
+<span class="fc" id="L85">            list.add( toEntity( stockMovementDto ) );</span>
+<span class="fc" id="L86">        }</span>
+
+<span class="fc" id="L88">        return list;</span>
+    }
+
+    protected SupplierOrder stockMovementDtoToSupplierOrder(StockMovementDto stockMovementDto) {
+<span class="pc bpc" id="L92" title="1 of 2 branches missed.">        if ( stockMovementDto == null ) {</span>
+<span class="nc" id="L93">            return null;</span>
+        }
+
+<span class="fc" id="L96">        SupplierOrder supplierOrder = new SupplierOrder();</span>
+
+<span class="fc" id="L98">        supplierOrder.setId( stockMovementDto.getSupplierOrderId() );</span>
+
+<span class="fc" id="L100">        return supplierOrder;</span>
+    }
+
+    private UUID entitySupplierOrderId(StockMovement stockMovement) {
+<span class="fc" id="L104">        SupplierOrder supplierOrder = stockMovement.getSupplierOrder();</span>
+<span class="pc bpc" id="L105" title="1 of 2 branches missed.">        if ( supplierOrder == null ) {</span>
+<span class="nc" id="L106">            return null;</span>
+        }
+<span class="fc" id="L108">        return supplierOrder.getId();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

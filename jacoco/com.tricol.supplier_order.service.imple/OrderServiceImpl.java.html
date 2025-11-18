@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>OrderServiceImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">supplier-order</a> &gt; <a href="index.source.html" class="el_package">com.tricol.supplier_order.service.imple</a> &gt; <span class="el_source">OrderServiceImpl.java</span></div><h1>OrderServiceImpl.java</h1><pre class="source lang-java linenums">package com.tricol.supplier_order.service.imple;
+
+import com.tricol.supplier_order.dto.*;
+import com.tricol.supplier_order.mapper.ProductMapper;
+import com.tricol.supplier_order.mapper.SupplierOrderMapper;
+import com.tricol.supplier_order.model.Product;
+import com.tricol.supplier_order.model.StockMovement;
+import com.tricol.supplier_order.model.SupplierOrder;
+import com.tricol.supplier_order.repositroy.OrdersRepositoryInterface;
+import com.tricol.supplier_order.repositroy.ProductsRepositoryInterface;
+import com.tricol.supplier_order.repositroy.StockMovementRepositoryInterface;
+import com.tricol.supplier_order.service.interfaces.OrderServiceInterface;
+import com.tricol.supplier_order.service.interfaces.StockMovementServiceInterface;
+import com.tricol.supplier_order.util.PageableUtil;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
+import java.util.*;
+
+@Service
+public class OrderServiceImpl implements OrderServiceInterface {
+
+    private final OrdersRepositoryInterface ordersRepository;
+    private final SupplierOrderMapper supplierOrderMapper;
+    private final ProductsRepositoryInterface productsRepository;
+    private final ProductMapper productMapper;
+    private final StockMovementServiceInterface stockMovementService;
+    private final StockMovementRepositoryInterface stockMovementRepository;
+
+    public OrderServiceImpl(
+            OrdersRepositoryInterface ordersRepository,
+            SupplierOrderMapper supplierOrderMapper,
+            ProductsRepositoryInterface productsRepository,
+            ProductMapper productMapper,
+            StockMovementServiceInterface stockMovementService,
+            StockMovementRepositoryInterface stockMovementRepository
+<span class="fc" id="L40">    ) {</span>
+<span class="fc" id="L41">        this.ordersRepository = ordersRepository;</span>
+<span class="fc" id="L42">        this.supplierOrderMapper = supplierOrderMapper;</span>
+<span class="fc" id="L43">        this.productsRepository = productsRepository;</span>
+<span class="fc" id="L44">        this.productMapper = productMapper;</span>
+<span class="fc" id="L45">        this.stockMovementService = stockMovementService;</span>
+<span class="fc" id="L46">        this.stockMovementRepository = stockMovementRepository;</span>
+<span class="fc" id="L47">    }</span>
+
+    @Override
+    public SupplierOrderDto getSupplierOrder(UUID supplierOrderId) {
+<span class="fc" id="L51">        return this.supplierOrderMapper.toDto(this.ordersRepository.findById(supplierOrderId).orElseThrow(() -&gt; new NoSuchElementException(&quot;Order not found with id: &quot; + supplierOrderId)));</span>
+    }
+
+    @Override
+    public List&lt;SupplierOrderDto&gt; getSupplierOrders(String sortBy, String order, String searchTerm, String searchBy, Pageable pageable) {
+<span class="fc" id="L56">        pageable = PageableUtil.getPageable(sortBy, order, pageable);</span>
+        Page&lt;SupplierOrder&gt; page;
+<span class="pc bpc" id="L58" title="3 of 4 branches missed.">        if (searchTerm != null &amp;&amp; searchBy != null) {</span>
+<span class="nc bnc" id="L59" title="All 2 branches missed.">            if (searchBy.toLowerCase().equals(&quot;status&quot;)) {</span>
+<span class="nc" id="L60">                page = this.ordersRepository.findByStatusContainingIgnoreCase(searchTerm, pageable);</span>
+            } else {
+<span class="nc" id="L62">                page = this.ordersRepository.findAll(pageable);</span>
+            }
+        } else {
+<span class="fc" id="L65">            page = this.ordersRepository.findAll(pageable);</span>
+        }
+<span class="fc" id="L67">        return this.supplierOrderMapper.toDtos(page.getContent());</span>
+    }
+
+    @Override
+    public void deleteSupplierOrder(UUID supplierOrderId) {
+<span class="fc" id="L72">        this.ordersRepository.deleteById(supplierOrderId);</span>
+<span class="fc" id="L73">    }</span>
+
+    @Override
+    public SupplierOrderDto createSupplierOrder(CreateOrderDto order) {
+<span class="fc" id="L77">        List&lt;Product&gt; products = fetchProducts(order);</span>
+<span class="fc" id="L78">        BigDecimal totalPrice = calculateTotalPrice(order, products);</span>
+<span class="fc" id="L79">        SupplierOrder supplierOrder = buildAndSaveSupplierOrder(order, products, totalPrice);</span>
+
+<span class="fc" id="L81">        stockMovementService.createStockMovements(supplierOrder, order.getProducts());</span>
+<span class="fc" id="L82">        updateProductQuantities(products, order);</span>
+
+<span class="fc" id="L84">        supplierOrder = reloadSupplierOrderWithMovements(supplierOrder.getId());</span>
+
+<span class="fc" id="L86">        return supplierOrderMapper.toDto(supplierOrder);</span>
+    }
+    private List&lt;Product&gt; fetchProducts(CreateOrderDto order) {
+<span class="fc" id="L89">        List&lt;UUID&gt; productIds = order.getProducts().stream()</span>
+<span class="fc" id="L90">                .map(OrderProduct::getProductId)</span>
+<span class="fc" id="L91">                .toList();</span>
+
+<span class="fc" id="L93">        List&lt;Product&gt; products = productsRepository.findAllById(productIds);</span>
+<span class="pc bpc" id="L94" title="1 of 2 branches missed.">        if (products.isEmpty()) {</span>
+<span class="nc" id="L95">            throw new IllegalArgumentException(&quot;No valid products found for IDs: &quot; + productIds);</span>
+        }
+
+<span class="fc" id="L98">        return products;</span>
+    }
+
+    private BigDecimal calculateTotalPrice(CreateOrderDto order, List&lt;Product&gt; products) {
+<span class="fc" id="L102">        return order.getProducts().stream()</span>
+<span class="fc" id="L103">                .map(op -&gt; {</span>
+<span class="fc" id="L104">                    Product product = findProductById(products, op.getProductId());</span>
+<span class="fc" id="L105">                    return new BigDecimal(product.getUnitPrice())</span>
+<span class="fc" id="L106">                            .multiply(BigDecimal.valueOf(op.getQuantity()));</span>
+                })
+<span class="fc" id="L108">                .reduce(BigDecimal.ZERO, BigDecimal::add);</span>
+    }
+
+    private SupplierOrder buildAndSaveSupplierOrder(CreateOrderDto order, List&lt;Product&gt; products, BigDecimal totalPrice) {
+<span class="fc" id="L112">        SupplierOrder supplierOrder = supplierOrderMapper.toEntity(</span>
+                new SupplierOrderDto()
+<span class="fc" id="L114">                        .setProducts(productMapper.toDtos(products))</span>
+<span class="fc" id="L115">                        .setSupplierId(order.getSupplier())</span>
+<span class="fc" id="L116">                        .setOrderDate(new Date())</span>
+<span class="fc" id="L117">                        .setTotalAmount(totalPrice.toString())</span>
+<span class="fc" id="L118">                        .setStatus(&quot;PENDING&quot;)</span>
+        );
+<span class="fc" id="L120">        return ordersRepository.save(supplierOrder);</span>
+    }
+
+    private void updateProductQuantities(List&lt;Product&gt; products, CreateOrderDto order) {
+<span class="fc bfc" id="L124" title="All 2 branches covered.">        for (OrderProduct op : order.getProducts()) {</span>
+<span class="fc" id="L125">            Product product = findProductById(products, op.getProductId());</span>
+<span class="fc" id="L126">            int newQuantity = product.getQuantity() - op.getQuantity();</span>
+<span class="fc" id="L127">            product.setQuantity(newQuantity);</span>
+<span class="fc" id="L128">        }</span>
+<span class="fc" id="L129">        productsRepository.saveAll(products);</span>
+<span class="fc" id="L130">    }</span>
+
+    private SupplierOrder reloadSupplierOrderWithMovements(UUID orderId) {
+<span class="fc" id="L133">        SupplierOrder supplierOrder = ordersRepository.findById(orderId)</span>
+<span class="pc" id="L134">                .orElseThrow(() -&gt; new NoSuchElementException(&quot;Order not found after save&quot;));</span>
+
+<span class="fc" id="L136">        List&lt;StockMovement&gt; stockMovements = stockMovementRepository</span>
+<span class="fc" id="L137">                .findBySupplierOrderId(orderId, PageRequest.of(0, 10))</span>
+<span class="fc" id="L138">                .getContent();</span>
+
+<span class="fc" id="L140">        supplierOrder.setStockMovements(new ArrayList&lt;&gt;(stockMovements));</span>
+<span class="fc" id="L141">        return supplierOrder;</span>
+    }
+
+    private Product findProductById(List&lt;Product&gt; products, UUID productId) {
+<span class="fc" id="L145">        return products.stream()</span>
+<span class="fc" id="L146">                .filter(p -&gt; p.getId().equals(productId))</span>
+<span class="fc" id="L147">                .findFirst()</span>
+<span class="pc" id="L148">                .orElseThrow(() -&gt; new IllegalArgumentException(&quot;Invalid product ID: &quot; + productId));</span>
+    }
+    @Override
+    public SupplierOrderDto updateSupplierOrder(SupplierOrderDto supplierOrderDto, UUID supplierOrderId) {
+<span class="fc" id="L152">        SupplierOrder existingOrder = ordersRepository.findById(supplierOrderId)</span>
+<span class="fc" id="L153">                .orElseThrow(() -&gt; new NoSuchElementException(&quot;Order not found with id: &quot; + supplierOrderId));</span>
+
+<span class="fc" id="L155">        Optional.ofNullable(supplierOrderDto.getOrderDate()).ifPresent(existingOrder::setOrderDate);</span>
+<span class="pc" id="L156">        Optional.ofNullable(supplierOrderDto.getTotalAmount()).ifPresent(s -&gt; existingOrder.setTotalAmount(Double.parseDouble(s)));</span>
+<span class="fc" id="L157">        Optional.ofNullable(supplierOrderDto.getStatus()).ifPresent(existingOrder::setStatus);</span>
+
+<span class="fc" id="L159">        SupplierOrder savedOrder = ordersRepository.save(existingOrder);</span>
+
+<span class="fc" id="L161">        return supplierOrderMapper.toDto(savedOrder);</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PageableBuilder.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">supplier-order</a> &gt; <a href="index.source.html" class="el_package">com.tricol.supplier_order.util</a> &gt; <span class="el_source">PageableBuilder.java</span></div><h1>PageableBuilder.java</h1><pre class="source lang-java linenums">package com.tricol.supplier_order.util;
+
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+
+<span class="nc" id="L7">public class PageableBuilder {</span>
+    public static Pageable buildPageable(String sortBy, String order, Integer page, Integer perPage) {
+<span class="pc bpc" id="L9" title="3 of 4 branches missed.">        int currentPage = (page != null &amp;&amp; page &gt; 0) ? page - 1 : 0;</span>
+<span class="pc bpc" id="L10" title="3 of 4 branches missed.">        int pageSize = (perPage != null &amp;&amp; perPage &gt; 0) ? perPage : 10;</span>
+<span class="fc" id="L11">        Sort sort = SortBuilder.BuildSort(sortBy, order);</span>
+
+<span class="fc" id="L13">        return PageRequest.of(currentPage, pageSize, sort);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

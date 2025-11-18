@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>OrderController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">supplier-order</a> &gt; <a href="index.source.html" class="el_package">com.tricol.supplier_order.controller</a> &gt; <span class="el_source">OrderController.java</span></div><h1>OrderController.java</h1><pre class="source lang-java linenums">package com.tricol.supplier_order.controller;
+
+import com.tricol.supplier_order.dto.CreateOrderDto;
+import com.tricol.supplier_order.dto.SupplierOrderDto;
+import com.tricol.supplier_order.service.interfaces.OrderServiceInterface;
+import com.tricol.supplier_order.util.PageableBuilder;
+import jakarta.validation.Valid;
+import org.springframework.data.domain.Pageable;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.UUID;
+
+@RestController
+@RequestMapping(&quot;/api/v1/orders&quot;)
+public class OrderController {
+
+    private final OrderServiceInterface orderService;
+
+<span class="fc" id="L20">    public OrderController(OrderServiceInterface orderService) {</span>
+<span class="fc" id="L21">        this.orderService = orderService;</span>
+<span class="fc" id="L22">    }</span>
+
+    @GetMapping(&quot;/{id}&quot;)
+    public SupplierOrderDto getSupplierOrder(@PathVariable(&quot;id&quot;) UUID id) {
+<span class="fc" id="L26">        return this.orderService.getSupplierOrder(id);</span>
+    }
+
+    @GetMapping
+    public List&lt;SupplierOrderDto&gt; getSupplierOrders(
+            @RequestParam(value = &quot;sortBy&quot;, required = false) String sortBy,
+            @RequestParam(value = &quot;order&quot;, required = false) String order,
+            @RequestParam(value = &quot;searchTerm&quot;, required = false) String searchTerm,
+            @RequestParam(value = &quot;searchBy&quot;, required = false) String searchBy,
+            @RequestParam(value = &quot;page&quot;, required = false) Integer page,
+            @RequestParam(value = &quot;perPage&quot;, required = false) Integer perPage
+    ) {
+<span class="fc" id="L38">        Pageable pageable = PageableBuilder.buildPageable(sortBy, order, page, perPage);</span>
+<span class="fc" id="L39">        return this.orderService.getSupplierOrders(sortBy, order, searchTerm, searchBy, pageable);</span>
+    }
+
+    @PostMapping
+    public SupplierOrderDto createSupplierOrder(@Valid @RequestBody CreateOrderDto order) {
+<span class="fc" id="L44">        return this.orderService.createSupplierOrder(order);</span>
+    }
+
+    @PutMapping(&quot;/{id}&quot;)
+    public SupplierOrderDto updateSupplierOrder(@RequestBody SupplierOrderDto supplierOrder, @PathVariable(&quot;id&quot;) UUID id) {
+<span class="fc" id="L49">        return this.orderService.updateSupplierOrder(supplierOrder, id);</span>
+    }
+
+    @DeleteMapping(&quot;/{id}&quot;)
+    public void deleteSupplierOrder(@PathVariable(&quot;id&quot;) UUID id) {
+<span class="fc" id="L54">        this.orderService.deleteSupplierOrder(id);</span>
+<span class="fc" id="L55">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

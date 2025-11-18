@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SupplierOrderMapperImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">supplier-order</a> &gt; <a href="index.source.html" class="el_package">com.tricol.supplier_order.mapper</a> &gt; <span class="el_source">SupplierOrderMapperImpl.java</span></div><h1>SupplierOrderMapperImpl.java</h1><pre class="source lang-java linenums">package com.tricol.supplier_order.mapper;
+
+import com.tricol.supplier_order.dto.ProductDto;
+import com.tricol.supplier_order.dto.StockMovementDto;
+import com.tricol.supplier_order.dto.SupplierOrderDto;
+import com.tricol.supplier_order.enums.MovementType;
+import com.tricol.supplier_order.model.Product;
+import com.tricol.supplier_order.model.StockMovement;
+import com.tricol.supplier_order.model.Supplier;
+import com.tricol.supplier_order.model.SupplierOrder;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+import javax.annotation.processing.Generated;
+import org.springframework.stereotype.Component;
+
+@Generated(
+    value = &quot;org.mapstruct.ap.MappingProcessor&quot;,
+    date = &quot;2025-11-19T00:18:38+0100&quot;,
+    comments = &quot;version: 1.6.3, compiler: javac, environment: Java 17.0.16 (OpenLogic)&quot;
+)
+@Component
+<span class="fc" id="L23">public class SupplierOrderMapperImpl implements SupplierOrderMapper {</span>
+
+    @Override
+    public SupplierOrder toEntity(SupplierOrderDto dto) {
+<span class="pc bpc" id="L27" title="1 of 2 branches missed.">        if ( dto == null ) {</span>
+<span class="nc" id="L28">            return null;</span>
+        }
+
+<span class="fc" id="L31">        SupplierOrder supplierOrder = new SupplierOrder();</span>
+
+<span class="fc" id="L33">        supplierOrder.setSupplier( supplierOrderDtoToSupplier( dto ) );</span>
+<span class="fc" id="L34">        supplierOrder.setId( dto.getId() );</span>
+<span class="fc" id="L35">        supplierOrder.setOrderDate( dto.getOrderDate() );</span>
+<span class="fc" id="L36">        supplierOrder.setStatus( dto.getStatus() );</span>
+<span class="pc bpc" id="L37" title="1 of 2 branches missed.">        if ( dto.getTotalAmount() != null ) {</span>
+<span class="fc" id="L38">            supplierOrder.setTotalAmount( Double.parseDouble( dto.getTotalAmount() ) );</span>
+        }
+<span class="fc" id="L40">        supplierOrder.setProducts( productDtoListToProductList( dto.getProducts() ) );</span>
+<span class="fc" id="L41">        supplierOrder.setStockMovements( stockMovementDtoListToStockMovementList( dto.getStockMovements() ) );</span>
+<span class="fc" id="L42">        supplierOrder.setCreatedAt( dto.getCreatedAt() );</span>
+
+<span class="fc" id="L44">        return supplierOrder;</span>
+    }
+
+    @Override
+    public SupplierOrderDto toDto(SupplierOrder entity) {
+<span class="pc bpc" id="L49" title="1 of 2 branches missed.">        if ( entity == null ) {</span>
+<span class="nc" id="L50">            return null;</span>
+        }
+
+<span class="fc" id="L53">        SupplierOrderDto supplierOrderDto = new SupplierOrderDto();</span>
+
+<span class="fc" id="L55">        supplierOrderDto.setSupplierId( entitySupplierId( entity ) );</span>
+<span class="fc" id="L56">        supplierOrderDto.setId( entity.getId() );</span>
+<span class="fc" id="L57">        supplierOrderDto.setOrderDate( entity.getOrderDate() );</span>
+<span class="fc" id="L58">        supplierOrderDto.setStatus( entity.getStatus() );</span>
+<span class="fc" id="L59">        supplierOrderDto.setTotalAmount( String.valueOf( entity.getTotalAmount() ) );</span>
+<span class="fc" id="L60">        supplierOrderDto.setProducts( productListToProductDtoList( entity.getProducts() ) );</span>
+<span class="fc" id="L61">        supplierOrderDto.setStockMovements( stockMovementListToStockMovementDtoList( entity.getStockMovements() ) );</span>
+<span class="fc" id="L62">        supplierOrderDto.setCreatedAt( entity.getCreatedAt() );</span>
+
+<span class="fc" id="L64">        return supplierOrderDto;</span>
+    }
+
+    @Override
+    public List&lt;SupplierOrderDto&gt; toDtos(List&lt;SupplierOrder&gt; supplierOrders) {
+<span class="pc bpc" id="L69" title="1 of 2 branches missed.">        if ( supplierOrders == null ) {</span>
+<span class="nc" id="L70">            return null;</span>
+        }
+
+<span class="fc" id="L73">        List&lt;SupplierOrderDto&gt; list = new ArrayList&lt;SupplierOrderDto&gt;( supplierOrders.size() );</span>
+<span class="fc bfc" id="L74" title="All 2 branches covered.">        for ( SupplierOrder supplierOrder : supplierOrders ) {</span>
+<span class="fc" id="L75">            list.add( toDto( supplierOrder ) );</span>
+<span class="fc" id="L76">        }</span>
+
+<span class="fc" id="L78">        return list;</span>
+    }
+
+    @Override
+    public List&lt;SupplierOrder&gt; toEntityList(List&lt;SupplierOrderDto&gt; supplierOrderDtos) {
+<span class="nc bnc" id="L83" title="All 2 branches missed.">        if ( supplierOrderDtos == null ) {</span>
+<span class="nc" id="L84">            return null;</span>
+        }
+
+<span class="nc" id="L87">        List&lt;SupplierOrder&gt; list = new ArrayList&lt;SupplierOrder&gt;( supplierOrderDtos.size() );</span>
+<span class="nc bnc" id="L88" title="All 2 branches missed.">        for ( SupplierOrderDto supplierOrderDto : supplierOrderDtos ) {</span>
+<span class="nc" id="L89">            list.add( toEntity( supplierOrderDto ) );</span>
+<span class="nc" id="L90">        }</span>
+
+<span class="nc" id="L92">        return list;</span>
+    }
+
+    protected Supplier supplierOrderDtoToSupplier(SupplierOrderDto supplierOrderDto) {
+<span class="pc bpc" id="L96" title="1 of 2 branches missed.">        if ( supplierOrderDto == null ) {</span>
+<span class="nc" id="L97">            return null;</span>
+        }
+
+<span class="fc" id="L100">        Supplier supplier = new Supplier();</span>
+
+<span class="fc" id="L102">        supplier.setId( supplierOrderDto.getSupplierId() );</span>
+
+<span class="fc" id="L104">        return supplier;</span>
+    }
+
+    protected Product productDtoToProduct(ProductDto productDto) {
+<span class="pc bpc" id="L108" title="1 of 2 branches missed.">        if ( productDto == null ) {</span>
+<span class="nc" id="L109">            return null;</span>
+        }
+
+<span class="fc" id="L112">        Product product = new Product();</span>
+
+<span class="fc" id="L114">        product.setId( productDto.getId() );</span>
+<span class="fc" id="L115">        product.setName( productDto.getName() );</span>
+<span class="fc" id="L116">        product.setDescription( productDto.getDescription() );</span>
+<span class="fc" id="L117">        product.setQuantity( productDto.getQuantity() );</span>
+<span class="fc" id="L118">        product.setUnitPrice( productDto.getUnitPrice() );</span>
+<span class="fc" id="L119">        product.setCategory( productDto.getCategory() );</span>
+<span class="fc" id="L120">        product.setCreatedAt( productDto.getCreatedAt() );</span>
+
+<span class="fc" id="L122">        return product;</span>
+    }
+
+    protected List&lt;Product&gt; productDtoListToProductList(List&lt;ProductDto&gt; list) {
+<span class="pc bpc" id="L126" title="1 of 2 branches missed.">        if ( list == null ) {</span>
+<span class="nc" id="L127">            return null;</span>
+        }
+
+<span class="fc" id="L130">        List&lt;Product&gt; list1 = new ArrayList&lt;Product&gt;( list.size() );</span>
+<span class="fc bfc" id="L131" title="All 2 branches covered.">        for ( ProductDto productDto : list ) {</span>
+<span class="fc" id="L132">            list1.add( productDtoToProduct( productDto ) );</span>
+<span class="fc" id="L133">        }</span>
+
+<span class="fc" id="L135">        return list1;</span>
+    }
+
+    protected StockMovement stockMovementDtoToStockMovement(StockMovementDto stockMovementDto) {
+<span class="nc bnc" id="L139" title="All 2 branches missed.">        if ( stockMovementDto == null ) {</span>
+<span class="nc" id="L140">            return null;</span>
+        }
+
+<span class="nc" id="L143">        StockMovement stockMovement = new StockMovement();</span>
+
+<span class="nc" id="L145">        stockMovement.setId( stockMovementDto.getId() );</span>
+<span class="nc" id="L146">        stockMovement.setDate( stockMovementDto.getDate() );</span>
+<span class="nc bnc" id="L147" title="All 2 branches missed.">        if ( stockMovementDto.getQuantity() != null ) {</span>
+<span class="nc" id="L148">            stockMovement.setQuantity( Integer.parseInt( stockMovementDto.getQuantity() ) );</span>
+        }
+<span class="nc bnc" id="L150" title="All 2 branches missed.">        if ( stockMovementDto.getType() != null ) {</span>
+<span class="nc" id="L151">            stockMovement.setType( Enum.valueOf( MovementType.class, stockMovementDto.getType() ) );</span>
+        }
+<span class="nc" id="L153">        stockMovement.setCreatedAt( stockMovementDto.getCreatedAt() );</span>
+
+<span class="nc" id="L155">        return stockMovement;</span>
+    }
+
+    protected List&lt;StockMovement&gt; stockMovementDtoListToStockMovementList(List&lt;StockMovementDto&gt; list) {
+<span class="pc bpc" id="L159" title="1 of 2 branches missed.">        if ( list == null ) {</span>
+<span class="nc" id="L160">            return null;</span>
+        }
+
+<span class="fc" id="L163">        List&lt;StockMovement&gt; list1 = new ArrayList&lt;StockMovement&gt;( list.size() );</span>
+<span class="pc bpc" id="L164" title="1 of 2 branches missed.">        for ( StockMovementDto stockMovementDto : list ) {</span>
+<span class="nc" id="L165">            list1.add( stockMovementDtoToStockMovement( stockMovementDto ) );</span>
+<span class="nc" id="L166">        }</span>
+
+<span class="fc" id="L168">        return list1;</span>
+    }
+
+    private UUID entitySupplierId(SupplierOrder supplierOrder) {
+<span class="fc" id="L172">        Supplier supplier = supplierOrder.getSupplier();</span>
+<span class="pc bpc" id="L173" title="1 of 2 branches missed.">        if ( supplier == null ) {</span>
+<span class="nc" id="L174">            return null;</span>
+        }
+<span class="fc" id="L176">        return supplier.getId();</span>
+    }
+
+    protected ProductDto productToProductDto(Product product) {
+<span class="pc bpc" id="L180" title="1 of 2 branches missed.">        if ( product == null ) {</span>
+<span class="nc" id="L181">            return null;</span>
+        }
+
+<span class="fc" id="L184">        ProductDto productDto = new ProductDto();</span>
+
+<span class="fc" id="L186">        productDto.setId( product.getId() );</span>
+<span class="fc" id="L187">        productDto.setName( product.getName() );</span>
+<span class="fc" id="L188">        productDto.setDescription( product.getDescription() );</span>
+<span class="fc" id="L189">        productDto.setQuantity( product.getQuantity() );</span>
+<span class="fc" id="L190">        productDto.setUnitPrice( product.getUnitPrice() );</span>
+<span class="fc" id="L191">        productDto.setCategory( product.getCategory() );</span>
+<span class="fc" id="L192">        productDto.setCreatedAt( product.getCreatedAt() );</span>
+
+<span class="fc" id="L194">        return productDto;</span>
+    }
+
+    protected List&lt;ProductDto&gt; productListToProductDtoList(List&lt;Product&gt; list) {
+<span class="pc bpc" id="L198" title="1 of 2 branches missed.">        if ( list == null ) {</span>
+<span class="nc" id="L199">            return null;</span>
+        }
+
+<span class="fc" id="L202">        List&lt;ProductDto&gt; list1 = new ArrayList&lt;ProductDto&gt;( list.size() );</span>
+<span class="fc bfc" id="L203" title="All 2 branches covered.">        for ( Product product : list ) {</span>
+<span class="fc" id="L204">            list1.add( productToProductDto( product ) );</span>
+<span class="fc" id="L205">        }</span>
+
+<span class="fc" id="L207">        return list1;</span>
+    }
+
+    protected StockMovementDto stockMovementToStockMovementDto(StockMovement stockMovement) {
+<span class="pc bpc" id="L211" title="1 of 2 branches missed.">        if ( stockMovement == null ) {</span>
+<span class="nc" id="L212">            return null;</span>
+        }
+
+<span class="fc" id="L215">        StockMovementDto stockMovementDto = new StockMovementDto();</span>
+
+<span class="fc" id="L217">        stockMovementDto.setId( stockMovement.getId() );</span>
+<span class="fc" id="L218">        stockMovementDto.setDate( stockMovement.getDate() );</span>
+<span class="fc" id="L219">        stockMovementDto.setQuantity( String.valueOf( stockMovement.getQuantity() ) );</span>
+<span class="pc bpc" id="L220" title="1 of 2 branches missed.">        if ( stockMovement.getType() != null ) {</span>
+<span class="fc" id="L221">            stockMovementDto.setType( stockMovement.getType().name() );</span>
+        }
+<span class="fc" id="L223">        stockMovementDto.setCreatedAt( stockMovement.getCreatedAt() );</span>
+
+<span class="fc" id="L225">        return stockMovementDto;</span>
+    }
+
+    protected List&lt;StockMovementDto&gt; stockMovementListToStockMovementDtoList(List&lt;StockMovement&gt; list) {
+<span class="pc bpc" id="L229" title="1 of 2 branches missed.">        if ( list == null ) {</span>
+<span class="nc" id="L230">            return null;</span>
+        }
+
+<span class="fc" id="L233">        List&lt;StockMovementDto&gt; list1 = new ArrayList&lt;StockMovementDto&gt;( list.size() );</span>
+<span class="fc bfc" id="L234" title="All 2 branches covered.">        for ( StockMovement stockMovement : list ) {</span>
+<span class="fc" id="L235">            list1.add( stockMovementToStockMovementDto( stockMovement ) );</span>
+<span class="fc" id="L236">        }</span>
+
+<span class="fc" id="L238">        return list1;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>
