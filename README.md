@@ -1,8 +1,12 @@
 # 🧵 Tricol – Supplier Orders & Stock Management API
 
+[![code coverage](https://img.shields.io/badge/coverage-64%25-red)](jacoco/index.html) 
+[![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Java](https://img.shields.io/badge/java-17-blue.svg)](https://www.java.com)
+
 ## 📘 Overview
 
-**Tricol** is a Spring Boot–based REST API designed for managing **suppliers**, **supplier orders**, and **inventory movements**.  
+**Tricol** is a Spring Boot–based REST API designed for managing **suppliers**, **supplier orders**, and **inventory movements**.
 It provides a complete digital solution for supplier relationship management, purchase tracking, and real-time stock valuation using **FIFO** method.
 
 ---
@@ -10,26 +14,26 @@ It provides a complete digital solution for supplier relationship management, pu
 ## 🚀 Features
 
 ### 🧾 Supplier Management
-- Create, update, delete, and view suppliers  
-- Fields: company, address, contact, email, phone, city, ICE  
+- Create, update, delete, and view suppliers
+- Fields: company, address, contact, email, phone, city, ICE
 
 ### 📦 Product Management
-- Manage product catalog and categories  
-- Fields: name, description, unit price, category, current stock  
+- Manage product catalog and categories
+- Fields: name, description, unit price, category, current stock
 
 ### 🧺 Supplier Orders
-- Create and manage supplier orders  
-- Associate orders with suppliers and multiple products  
-- Automatically calculate total order amount  
+- Create and manage supplier orders
+- Associate orders with suppliers and multiple products
+- Automatically calculate total order amount
 - Statuses: `EN_ATTENTE`, `VALIDÉE`, `LIVRÉE`, `ANNULÉE`
 
 ### 📊 Stock Movements & Valuation
-- Automatic stock entries upon order delivery  
-- Track entries, exits, and adjustments  
-- Real-time stock quantity updates  
+- Automatic stock entries upon order delivery
+- Track entries, exits, and adjustments
+- Real-time stock quantity updates
 - Configurable valuation methods:
   - **FIFO (First In, First Out)**
-  - **CUMP (Weighted Average Cost)**  
+  - **CUMP (Weighted Average Cost)**
 
 ### 🔎 Pagination & Filtering
 - Supported on all main entities (suppliers, products, orders)
@@ -57,73 +61,78 @@ Layered architecture following clean design principles:
 
 ## 🗄️ Data Model (Simplified)
 
-### Fournisseur
+### Supplier
 | Field | Type | Description |
 |-------|------|-------------|
 | id | UUID | Identifier |
-| societe | String | Company name |
-| adresse | String | Address |
+| company | String | Company name |
+| address | String | Address |
 | contact | String | Contact person |
 | email | String | Email |
-| telephone | String | Phone |
-| ville | String | City |
-| ice | String | ICE (company ID) |
+| phone | String | Phone |
+| city | String | City |
+| ice | int | ICE (company ID) |
+| createdAt | LocalDateTime | Creation timestamp |
 
-### Produit
+### Product
 | Field | Type | Description |
 |-------|------|-------------|
 | id | UUID | Identifier |
-| nom | String | Product name |
+| name | String | Product name |
 | description | String | Description |
-| prixUnitaire | BigDecimal | Unit price |
-| categorie | String | Category |
-| stockActuel | Integer | Current available stock |
+| quantity | int | Available stock |
+| unitPrice | double | Unit price |
+| category | String | Category |
+| createdAt | LocalDateTime | Creation timestamp |
 
-### CommandeFournisseur
+### SupplierOrder
 | Field | Type | Description |
 |-------|------|-------------|
 | id | UUID | Identifier |
-| dateCommande | LocalDate | Order date |
-| statut | Enum | EN_ATTENTE / VALIDÉE / LIVRÉE / ANNULÉE |
-| montantTotal | BigDecimal | Total order cost |
-| fournisseur | Fournisseur | Linked supplier |
-| produits | List<Produit> | Ordered products |
+| orderDate | Date | Order date |
+| status | String | EN_ATTENTE / VALIDÉE / LIVRÉE / ANNULÉE |
+| totalAmount | double | Total order cost |
+| supplier | Supplier | Linked supplier |
+| products | List<Product> | Ordered products |
+| createdAt | LocalDateTime | Creation timestamp |
 
-### MouvementStock
+### StockMovement
 | Field | Type | Description |
 |-------|------|-------------|
 | id | UUID | Identifier |
 | type | Enum | ENTREE / SORTIE / AJUSTEMENT |
-| quantite | Integer | Quantity moved |
-| dateMouvement | LocalDateTime | Movement date |
-| produit | Produit | Related product |
-| commande | CommandeFournisseur | Related order |
+| quantity | int | Quantity moved |
+| date | Date | Movement date |
+| supplierOrder | SupplierOrder | Related order |
+| createdAt | LocalDateTime | Creation timestamp |
 
 ---
 
 ## ⚙️ Technologies
 
-| Category | Tools / Frameworks |
-|-----------|--------------------|
-| Backend | Spring Boot 3, Java 17 |
-| ORM | Spring Data JPA, Hibernate |
-| Database | PostgreSQL |
-| Migrations | Liquibase |
-| Mapping | MapStruct |
-| Validation | Jakarta Validation |
-| Documentation | Swagger / OpenAPI |
-| Build Tool | Maven |
+| Category | Tools / Frameworks | Version |
+|-----------|--------------------|---------|
+| Backend | Spring Boot | 3.5.7 |
+| Language | Java | 17 |
+| ORM | Spring Data JPA, Hibernate | 3.5.7 |
+| Database | PostgreSQL | Managed by Spring Boot |
+| Test Database | H2 | Managed by Spring Boot |
+| Migrations | Liquibase | Managed by Spring Boot |
+| Mapping | MapStruct | 1.6.3 |
+| Validation | Jakarta Validation | 3.5.7 |
+| API Documentation | SpringDoc OpenAPI (Swagger) | 2.8.13 |
+| Code Generation | Lombok | 1.18.42 |
+| Build Tool | Maven | 3.9.11 |
+| Code Coverage | Jacoco | 0.8.14 |
 
 ---
 
 ## 🔧 Setup & Installation
 
 ### 1. Prerequisites
-- Java 17+  
-- Maven  
+- Java 17+
+- Maven
 - PostgreSQL
-- MapStruct
-- Liquibase
 
 ### 2. Database Configuration
 Edit `src/main/resources/application.properties`:
@@ -152,40 +161,64 @@ http://localhost:8080/swagger-ui.html
 ### Suppliers
 | Method | Endpoint | Description |
 |--------|-----------|-------------|
-| GET | `/api/suppliers` | List suppliers (paginated) |
-| GET | `/api/suppliers/{id}` | Get supplier details |
-| POST | `/api/suppliers` | Create supplier |
-| PUT | `/api/suppliers/{id}` | Update supplier |
-| DELETE | `/api/suppliers/{id}` | Delete supplier |
+| GET | `/api/v1/suppliers` | List suppliers (paginated) |
+| GET | `/api/v1/suppliers/{id}` | Get supplier details |
+| POST | `/api/v1/suppliers` | Create supplier |
+| PUT | `/api/v1/suppliers/{id}` | Update supplier |
+| DELETE | `/api/v1/suppliers/{id}` | Delete supplier |
 
 ### Products
 | Method | Endpoint | Description |
 |--------|-----------|-------------|
-| GET | `/api/products` | List products |
-| GET | `/api/products/{id}` | Get product details |
-| POST | `/api/products` | Create product |
-| PUT | `/api/products/{id}` | Update product |
-| DELETE | `/api/products/{id}` | Delete product |
+| GET | `/api/v1/products` | List products |
+| GET | `/api/v1/products/{id}` | Get product details |
+| POST | `/api/v1/products` | Create product |
+| PUT | `/api/v1/products/{id}` | Update product |
+| DELETE | `/api/v1/products/{id}` | Delete product |
 
 ### Supplier Orders
 | Method | Endpoint | Description |
 |--------|-----------|-------------|
-| GET | `/api/orders` | List supplier orders |
-| GET | `/api/orders/{id}` | Get order details |
-| POST | `/api/orders` | Create order |
-| PUT | `/api/orders/{id}` | Update order (status/products) |
-| DELETE | `/api/orders/{id}` | Cancel order |
+| GET | `/api/v1/orders` | List supplier orders |
+| GET | `/api/v1/orders/{id}` | Get order details |
+| POST | `/api/v1/orders` | Create order |
+| PUT | `/api/v1/orders/{id}` | Update order (status/products) |
+| DELETE | `/api/v1/orders/{id}` | Cancel order |
 
 ### Stock Movements
 | Method | Endpoint | Description |
 |--------|-----------|-------------|
-| GET | `/api/stock-movements` | Filter movements by product, type, or order |
+| GET | `/api/v1/stock-movements` | Filter movements by product, type, or order |
+
+---
+
+## 🧪 Testing
+
+The project uses **JUnit 5** and **Mockito** for unit and integration testing.
+
+Tests run against an in-memory **H2 database** to ensure isolation and avoid impacting the development database.
+
+### Running Tests
+
+To run the full test suite, execute the following Maven command:
+
+```bash
+mvn clean install
+```
+
+### Code Coverage
+
+**JaCoCo** is used to generate code coverage reports. the report can be found at:
+
+```
+jacoco/index.html
+```
 
 ---
 
 ## 🤝 Contributing
 
-Contributions, suggestions, and improvements are always welcome.  
+Contributions, suggestions, and improvements are always welcome.
 Please open an issue or submit a pull request.
 
 ---
