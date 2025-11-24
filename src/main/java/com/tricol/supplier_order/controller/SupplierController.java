@@ -2,19 +2,29 @@ package com.tricol.supplier_order.controller;
 import com.tricol.supplier_order.dto.SupplierDto;
 import com.tricol.supplier_order.service.interfaces.SupplierServiceInterface;
 import com.tricol.supplier_order.util.PageableBuilder;
+import io.github.bucket4j.Bandwidth;
+import io.github.bucket4j.Bucket;
+import io.github.bucket4j.Refill;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.Duration;
 import java.util.List;
 import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/suppliers")
+@CrossOrigin(origins = "http://localhost:4200")
 public class SupplierController {
     private final SupplierServiceInterface supplierService;
+    private final Bucket bucket;
 
     public SupplierController(SupplierServiceInterface supplierService) {
+        Bandwidth limit = Bandwidth.classic(20, Refill.greedy(20, Duration.ofMinutes(1)));
+        this.bucket = Bucket.builder()
+                .addLimit(limit)
+                .build();
         this.supplierService = supplierService;
     }
     @GetMapping("/{id}")

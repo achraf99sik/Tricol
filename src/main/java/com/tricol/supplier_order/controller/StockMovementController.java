@@ -3,21 +3,28 @@ package com.tricol.supplier_order.controller;
 import com.tricol.supplier_order.dto.StockMovementDto;
 import com.tricol.supplier_order.service.interfaces.StockMovementServiceInterface;
 import com.tricol.supplier_order.util.PageableBuilder;
+import io.github.bucket4j.Bandwidth;
+import io.github.bucket4j.Bucket;
+import io.github.bucket4j.Refill;
 import org.springframework.data.domain.Pageable;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.time.Duration;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/stock-movements")
+@CrossOrigin(origins = "http://localhost:4200")
 public class StockMovementController {
 
     private final StockMovementServiceInterface stockMovementService;
+    private final Bucket bucket;
 
     public StockMovementController(StockMovementServiceInterface stockMovementService) {
+        Bandwidth limit = Bandwidth.classic(20, Refill.greedy(20, Duration.ofMinutes(1)));
+        this.bucket = Bucket.builder()
+                .addLimit(limit)
+                .build();
         this.stockMovementService = stockMovementService;
     }
 
