@@ -14,7 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/stock-movements")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "https://tricol-fontend.vercel.app")
 public class StockMovementController {
 
     private final StockMovementServiceInterface stockMovementService;

@@ -15,7 +15,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/suppliers")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "https://tricol-fontend.vercel.app")
 public class SupplierController {
     private final SupplierServiceInterface supplierService;
     private final Bucket bucket;
